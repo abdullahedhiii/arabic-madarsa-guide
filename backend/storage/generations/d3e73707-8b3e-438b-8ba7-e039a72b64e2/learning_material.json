@@ -1,0 +1,160 @@
+{
+  "title": "Arabic Grammar for Madrasa Students - Beginner Level",
+  "summary": "This learning material covers the basics of Arabic grammar, focusing on the definition of Nahw, types of words (noun, verb, particle), and simple exercises to help students understand and apply these concepts.",
+  "revision_notes": [
+    {
+      "heading": "Definition of Nahw",
+      "explanation": "Nahw is the science that teaches how to join nouns, verbs, and particles to form correct sentences and understand the condition of the last letter of a word.",
+      "examples": [
+        {
+          "arabic": "دَخَلَ, دَار, زَيْد, و فِي",
+          "english": "entered, house, Zayd, and in",
+          "note": "These words can be combined to form a correct sentence using the rules of Nahw."
+        }
+      ]
+    },
+    {
+      "heading": "Types of Words",
+      "explanation": "In Arabic, words are categorized into three types: اِسْمٌ (noun), فِعْلٌ (verb), and حَرْفٌ (particle). Each type has specific characteristics.",
+      "examples": [
+        {
+          "arabic": "رَجُلٌ, ضَرَبَ, مِنْ",
+          "english": "man, he hit, from",
+          "note": "رَجُلٌ is a noun, ضَرَبَ is a verb, and مِنْ is a particle."
+        }
+      ]
+    },
+    {
+      "heading": "Characteristics of Nouns",
+      "explanation": "A noun is a word that can convey meaning independently and does not have a tense. It names a person, place, or thing.",
+      "examples": [
+        {
+          "arabic": "الْبَيْتُ",
+          "english": "the house",
+          "note": "This is a noun that names a place."
+        }
+      ]
+    },
+    {
+      "heading": "Characteristics of Verbs",
+      "explanation": "A verb is a word that can convey meaning independently and has a tense (past, present, or future). It denotes an action.",
+      "examples": [
+        {
+          "arabic": "ضَرَبَ",
+          "english": "he hit",
+          "note": "This is a verb that denotes an action in the past tense."
+        }
+      ]
+    },
+    {
+      "heading": "Characteristics of Particles",
+      "explanation": "A particle is a word that cannot convey meaning independently and needs to be joined with a noun or a verb.",
+      "examples": [
+        {
+          "arabic": "مِنْ",
+          "english": "from",
+          "note": "This particle needs to be joined with a noun or a verb to convey a complete meaning."
+        }
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "What is Nahw?",
+      "back": "Nahw is the science that teaches how to join nouns, verbs, and particles to form correct sentences.",
+      "arabic_focus": "النَّحْوُ"
+    },
+    {
+      "front": "What are the three types of words in Arabic?",
+      "back": "The three types are اِسْمٌ (noun), فِعْلٌ (verb), and حَرْفٌ (particle).",
+      "arabic_focus": "اِسْمٌ, فِعْلٌ, حَرْفٌ"
+    },
+    {
+      "front": "What is a noun?",
+      "back": "A noun is a word that can convey meaning independently and does not have a tense. It names a person, place, or thing.",
+      "arabic_focus": "اِسْمٌ"
+    },
+    {
+      "front": "What is a verb?",
+      "back": "A verb is a word that can convey meaning independently and has a tense. It denotes an action.",
+      "arabic_focus": "فِعْلٌ"
+    },
+    {
+      "front": "What is a particle?",
+      "back": "A particle is a word that cannot convey meaning independently and needs to be joined with a noun or a verb.",
+      "arabic_focus": "حَرْفٌ"
+    }
+  ],
+  "key_terms": [
+    {
+      "arabic": "النَّحْوُ",
+      "english": "Nahw",
+      "simple_explanation": "The science of Arabic grammar that teaches how to form correct sentences."
+    },
+    {
+      "arabic": "اِسْمٌ",
+      "english": "noun",
+      "simple_explanation": "A word that names a person, place, or thing and can convey meaning independently."
+    },
+    {
+      "arabic": "فِعْلٌ",
+      "english": "verb",
+      "simple_explanation": "A word that denotes an action and has a tense."
+    },
+    {
+      "arabic": "حَرْفٌ",
+      "english": "particle",
+      "simple_explanation": "A word that cannot convey meaning independently and needs to be joined with a noun or a verb."
+    }
+  ],
+  "quiz": [
+    {
+      "question_type": "multiple_choice",
+      "question": "Which of the following is a noun?",
+      "options": [
+        "ضَرَبَ",
+        "رَجُلٌ",
+        "مِنْ",
+        "وَ"
+      ],
+      "answer": "رَجُلٌ",
+      "explanation": "رَجُلٌ is a noun because it names a person and can convey meaning independently."
+    },
+    {
+      "question_type": "fill_in_the_blank",
+      "question": "The science that teaches how to join nouns, verbs, and particles to form correct sentences is called ________.",
+      "options": [],
+      "answer": "النَّحْوُ",
+      "explanation": "The correct answer is النَّحْوُ, which means Nahw in Arabic."
+    },
+    {
+      "question_type": "true_false",
+      "question": "A verb can have a tense.",
+      "options": [],
+      "answer": "True",
+      "explanation": "This is true because a verb denotes an action and has a tense (past, present, or future)."
+    },
+    {
+      "question_type": "short_answer",
+      "question": "What are the three types of words in Arabic?",
+      "options": [],
+      "answer": "اِسْمٌ, فِعْلٌ, حَرْفٌ",
+      "explanation": "The three types of words in Arabic are اِسْمٌ (noun), فِعْلٌ (verb), and حَرْفٌ (particle)."
+    }
+  ],
+  "exercise_answers": [
+    {
+      "exercise_number": "1",
+      "question": "State with reason whether the following words are حَرْفٌ or فِعْلٌ ، اِسْمٌ.",
+      "answer": "i. فِعْلٌ (He sat is an action and has a tense.), iii. اِسْمٌ (girl is a noun that names a person.), ii. حَرْفٌ (and is a particle that needs to be joined with other words.), iv. فِعْلٌ (He broke is an action and has a tense.)",
+      "reason": "The answers are based on the definitions of اِسْمٌ, فِعْلٌ, and حَرْفٌ provided in the text."
+    },
+    {
+      "exercise_number": "2",
+      "question": "Find the meaning and the plural of the following nouns using a dictionary.",
+      "answer": "i. قَلَمٌ: meaning - pen, plural - أَقْلامٌ, iii. كِتَابٌ: meaning - book, plural - كُتُبٌ, ii. فَصْلٌ: meaning - season, plural - أَفْصَالٌ, iv. سَبُورَةٌ: meaning - blackboard, plural - سَبُورَاتٌ",
+      "reason": "The meanings and plurals are based on common Arabic usage."
+    }
+  ],
+  "teacher_review_flags": []
+}
