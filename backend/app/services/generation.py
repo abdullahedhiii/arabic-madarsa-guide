@@ -109,6 +109,18 @@ CONTENT RULES:
 - If the text is unclear, mention it in teacher_review_flags.
 - Solve ONLY the exercises present in the text.
 
+SECTION-WISE OUTPUT RULES:
+- The input markdown may contain one or more sections.
+- Section IDs are NOT hardcoded.
+- Extract section_id from the visible section number in the markdown, such as "1.1", "1.2", "2.3".
+- If no visible section number exists, use "unknown".
+- Use the visible section heading as "title".
+- Create one object inside "sections" for each detected section.
+- Keep the exact same inner object format for every section.
+- Do not merge two different numbered sections.
+- Do not split one numbered section unless another numbered section starts.
+- All flashcards, quiz questions, exercises, and diagrams must belong only to their own section.
+
 INTERACTIVE LESSON RULES:
 - Start with a very simple explanation of the topic.
 - Add a “Think about it” question.
@@ -164,115 +176,117 @@ DIAGRAM RULES:
 - The diagram must be returned as JSON data, not as an image.
 
 Return valid JSON only.
-
 OUTPUT FORMAT:
 {{
-  "title": "",
-  "difficulty_level": "beginner",
-  "mini_lesson": {{
-    "simple_intro": "",
-    "step_by_step_explanation": [
-      ""
-    ],
-    "think_about_it": {{
-      "question": "",
-      "hint": "",
-      "answer": ""
-    }},
-    "try_it_yourself": {{
-      "task": "",
-      "expected_answer": "",
-      "simple_reason": ""
-    }},
-    "common_mistake": {{
-      "mistake": "",
-      "correction": ""
-    }},
-    "tiny_recap": [
-      ""
-    ]
-  }},
-  
-  "key_terms": [
+  "sections": [
     {{
-      "arabic": "",
-      "english": "",
-      "simple_explanation": "",
-      "example_from_text": ""
+      "section_id": "",
+      "title": "",
+      "difficulty_level": "beginner",
+      "mini_lesson": {{
+        "simple_intro": "",
+        "step_by_step_explanation": [
+          ""
+        ],
+        "think_about_it": {{
+          "question": "",
+          "hint": "",
+          "answer": ""
+        }},
+        "try_it_yourself": {{
+          "task": "",
+          "expected_answer": "",
+          "simple_reason": ""
+        }},
+        "common_mistake": {{
+          "mistake": "",
+          "correction": ""
+        }},
+        "tiny_recap": [
+          ""
+        ]
+      }},
+      "key_terms": [
+        {{
+          "arabic": "",
+          "english": "",
+          "simple_explanation": "",
+          "example_from_text": ""
+        }}
+      ],
+      "flashcards": [
+        {{
+          "front": "",
+          "back": "",
+          "arabic_focus": ""
+        }}
+      ],
+      "quiz": [
+        {{
+          "type": "multiple_choice",
+          "question": "",
+          "options": ["", "", "", ""],
+          "correct_answer": "",
+          "simple_explanation": ""
+        }},
+        {{
+          "type": "fill_blank",
+          "question": "",
+          "options": [],
+          "correct_answer": "",
+          "simple_explanation": ""
+        }},
+        {{
+          "type": "true_false",
+          "question": "",
+          "options": ["True", "False"],
+          "correct_answer": "",
+          "simple_explanation": ""
+        }},
+        {{
+          "type": "short_answer",
+          "question": "",
+          "options": [],
+          "correct_answer": "",
+          "simple_explanation": ""
+        }}
+      ],
+      "exercise_answers": [
+        {{
+          "exercise_number": "",
+          "question": "",
+          "answer": "",
+          "reason": ""
+        }}
+      ],
+      "diagram": {{
+        "type": "",
+        "title": "",
+        "purpose": "",
+        "source_example": "",
+        "nodes": [
+          {{
+            "id": "",
+            "label": "",
+            "arabic": "",
+            "english": "",
+            "role": "",
+            "color_hint": ""
+          }}
+        ],
+        "connections": [
+          {{
+            "from": "",
+            "to": "",
+            "label": ""
+          }}
+        ],
+        "notes": []
+      }},
+      "teacher_review_flags": []
     }}
-  ],
-  "flashcards": [
-    {{
-      "front": "",
-      "back": "",
-      "arabic_focus": ""
-    }}
-  ],
-    "quiz": [
-    {{
-      "type": "multiple_choice",
-      "question": "",
-      "options": ["", "", "", ""],
-      "correct_answer": "",
-      "simple_explanation": ""
-    }},
-    {{
-      "type": "fill_blank",
-      "question": "",
-      "options": [],
-      "correct_answer": "",
-      "simple_explanation": ""
-    }},
-    {{
-      "type": "true_false",
-      "question": "",
-      "options": ["True", "False"],
-      "correct_answer": "",
-      "simple_explanation": ""
-    }},
-    {{
-      "type": "short_answer",
-      "question": "",
-      "options": [],
-      "correct_answer": "",
-      "simple_explanation": ""
-    }}
-  ],
-  "exercise_answers": [
-    {{
-      "exercise_number": "",
-      "question": "",
-      "answer": "",
-      "reason": ""
-    }}
-  ],
-  "diagram": {{
-    "type": "",
-    "title": "",
-    "purpose": "",
-    "source_example": "",
-    "nodes": [
-      {{
-        "id": "",
-        "label": "",
-        "arabic": "",
-        "english": "",
-        "role": "",
-        "color_hint": ""
-      }}
-    ],
-    "connections": [
-      {{
-        "from": "",
-        "to": "",
-        "label": ""
-      }}
-    ],
-    "notes": []
-  }},
-  "teacher_review_flags": []
+  ]
 }}
-
 IMPORTANT:
 - Keep quiz questions separate from exercise answers.
 - Quiz questions are generated for practice.
