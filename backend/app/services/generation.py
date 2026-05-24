@@ -10,7 +10,7 @@ from app.config import (
     OPENROUTER_BASE_URL,
     QWEN_VISION_MODEL,
 )
-from app.services.file_storage import new_id, save_json, save_text, read_text
+from app.services.file_storage import new_id, save_json, save_text, read_json, read_text
 
 
 client = OpenAI(
@@ -355,6 +355,8 @@ def generate_material(extraction_id: str) -> dict:
         )
 
     markdown = read_text(extracted_md_path)
+    extraction_metadata_path = extraction_dir / "metadata.json"
+    extraction_metadata = read_json(extraction_metadata_path) if extraction_metadata_path.exists() else {}
 
     generation_id = new_id()
     generation_dir = GENERATIONS_DIR / generation_id
@@ -375,5 +377,7 @@ def generate_material(extraction_id: str) -> dict:
     return {
         "generation_id": generation_id,
         "extraction_id": extraction_id,
+        "book_id": extraction_metadata.get("book_id"),
+        "pages": extraction_metadata.get("pages", []),
         "result": result,
     }

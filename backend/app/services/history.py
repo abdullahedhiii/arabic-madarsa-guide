@@ -99,9 +99,12 @@ def get_generation_history_item(generation_id: str):
         )
 
     metadata = read_json(metadata_path)
+    extraction = _load_extraction_metadata(metadata.get("extraction_id", ""))
 
     return {
         "generation_id": metadata.get("generation_id", generation_id),
         "extraction_id": metadata.get("extraction_id"),
+        "book_id": extraction.get("book_id") if extraction else None,
+        "pages": extraction.get("pages") if extraction else [],
         "result": read_json(result_path),
     }

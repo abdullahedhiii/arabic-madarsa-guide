@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Optional
 
 
 class ExtractRequest(BaseModel):
@@ -21,4 +21,6 @@ class GenerateRequest(BaseModel):
 class GenerateResponse(BaseModel):
     generation_id: str
     extraction_id: str
+    book_id: Optional[str] = None
+    pages: List[int] = Field(default_factory=list)
     result: dict

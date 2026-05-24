@@ -212,6 +212,49 @@ function PreviewModal({ bookId, page, onClose }) {
   );
 }
 
+function SourcePagesViewer({ lesson }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [openPreviewPage, setOpenPreviewPage] = useState(null);
+  const bookId = lesson?.book_id;
+  const pages = Array.isArray(lesson?.pages) ? lesson.pages : [];
+
+  if (!bookId || pages.length === 0) return null;
+
+  return (
+    <>
+      <button className="source-pages-button" type="button" onClick={() => setIsOpen(true)}>
+        View source pages
+      </button>
+
+      {isOpen && (
+        <div className="source-pages-backdrop" role="presentation" onClick={() => setIsOpen(false)}>
+          <section
+            className="source-pages-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Source textbook pages"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="source-pages-header">
+              <div>
+                <p className="eyebrow">Original pages</p>
+                <h2>Read these pages</h2>
+                <p>This lesson was generated from these textbook pages.</p>
+              </div>
+              <button className="icon-button" type="button" onClick={() => setIsOpen(false)} aria-label="Close source pages">
+                X
+              </button>
+            </div>
+            <PagePreview bookId={bookId} pages={pages} onOpenPage={setOpenPreviewPage} />
+          </section>
+        </div>
+      )}
+
+      <PreviewModal bookId={bookId} page={openPreviewPage} onClose={() => setOpenPreviewPage(null)} />
+    </>
+  );
+}
+
 function ListSection({ title, items, renderItem }) {
   if (!Array.isArray(items) || items.length === 0) return null;
 
@@ -856,9 +899,12 @@ function LessonPage({ lesson, onBack }) {
   return (
     <main className="lesson-page">
       <div className="lesson-page-topbar">
-        <button className="secondary-button compact" type="button" onClick={onBack}>
-          Back to dashboard
-        </button>
+        <div className="lesson-page-actions">
+          <button className="secondary-button compact" type="button" onClick={onBack}>
+            Back to dashboard
+          </button>
+          <SourcePagesViewer lesson={lesson} />
+        </div>
         <p>Study mode</p>
       </div>
       <GeneratedContent generation={lesson} />

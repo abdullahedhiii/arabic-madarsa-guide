@@ -75,6 +75,72 @@ select {
   font-weight: 850;
 }
 
+.lesson-page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.source-pages-button {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid rgba(15, 111, 115, 0.22);
+  border-radius: 8px;
+  color: var(--accent-dark);
+  background: var(--mint);
+  cursor: pointer;
+  font-weight: 850;
+}
+
+.source-pages-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 18;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(23, 32, 29, 0.56);
+}
+
+.source-pages-panel {
+  width: min(980px, 100%);
+  max-height: min(90vh, 900px);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 18px;
+  padding: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.36);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 253, 248, 0.98), rgba(220, 238, 230, 0.88)),
+    var(--paper);
+  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.source-pages-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.source-pages-header h2 {
+  margin: 4px 0 6px;
+}
+
+.source-pages-header p:not(.eyebrow) {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.source-pages-panel .page-preview-grid {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  max-height: none;
+  min-height: 0;
+}
+
 .hero {
   min-height: 280px;
   display: grid;
