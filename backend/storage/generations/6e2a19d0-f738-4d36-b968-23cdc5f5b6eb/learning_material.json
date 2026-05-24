@@ -1,0 +1,159 @@
+{
+  "title": "المرَكَباتُ وَالجُمَلُ – Sentences and Phrases",
+  "summary": "This section introduces the basics of Arabic sentences and phrases, focusing on complete and incomplete sentences, nominal and verbal sentences, and various types of inshaiyyah sentences.",
+  "revision_notes": [
+    {
+      "heading": "Complete vs. Incomplete Sentences",
+      "explanation": "In Arabic, sentences can be complete (كلام تَام) or incomplete (كلام نَاقِص). Complete sentences are self-sufficient, while incomplete sentences lack some elements.",
+      "examples": [
+        {
+          "arabic": "هَذَا جُمْلَة تَامَّة.",
+          "english": "This is a complete sentence.",
+          "note": "Example of a complete sentence."
+        },
+        {
+          "arabic": "هَذَا جُمْلَة لَا تَتَمَّم.",
+          "english": "This is an incomplete sentence.",
+          "note": "Example of an incomplete sentence."
+        }
+      ]
+    },
+    {
+      "heading": "Nominal Sentence (جُمْلَة إِسْمِيَّة)",
+      "explanation": "A nominal sentence starts with a noun (المُبْتَدَأ) followed by a predicate (الخَبَر). Both parts are usually in the nominative case (مَرْفُوعَة).",
+      "examples": [
+        {
+          "arabic": "الْبَيْتُ نَظِيفٌ",
+          "english": "The house is clean.",
+          "note": "Analysis: المُبْتَدَأ (الْبَيْتُ) + الخَبَر (نَظِيفٌ)"
+        }
+      ]
+    },
+    {
+      "heading": "Verbal Sentence (جُمْلَةٌ فِعْلِيَّةٌ)",
+      "explanation": "A verbal sentence starts with a verb (الفِعْلُ), followed by the subject (الفَاعِلُ) which is always in the nominative case (مَرْفُوعٌ).",
+      "examples": [
+        {
+          "arabic": "جَلَسَ زَيْدٌ",
+          "english": "Zayd sat.",
+          "note": "Analysis: الفِعْلُ (جَلَسَ) + الفَاعِلُ (زَيْدٌ)"
+        }
+      ]
+    },
+    {
+      "heading": "Types of Inshaiyyah Sentences",
+      "explanation": "There are ten types of inshaiyyah sentences including commands, interrogatives, exclamations, etc., each serving a specific communicative function.",
+      "examples": [
+        {
+          "arabic": "يَا إِبْرَاهِيمُ!",
+          "english": "O Ibrahim!",
+          "note": "An example of an exclamation (النِّدَاءُ)."
+        }
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "What is a جُمْلَة تَامَّة?",
+      "back": "A complete sentence that is self-sufficient.",
+      "arabic_focus": "كلام تَام"
+    },
+    {
+      "front": "What is المُبْتَدَأ in a جُمْلَة إِسْمِيَّة?",
+      "back": "The subject or the word about which information is given.",
+      "arabic_focus": "المُبْتَدَأ"
+    },
+    {
+      "front": "What is the خَبَر in a جُمْلَة إِسْمِيَّة?",
+      "back": "The predicate or the word giving the information.",
+      "arabic_focus": "الخَبَر"
+    }
+  ],
+  "key_terms": [
+    {
+      "arabic": "جُمْلَة تَامَّة",
+      "english": "Complete Sentence",
+      "simple_explanation": "A sentence that is self-sufficient and does not require additional information."
+    },
+    {
+      "arabic": "جُمْلَة نَاقِصَة",
+      "english": "Incomplete Sentence",
+      "simple_explanation": "A sentence that lacks some elements and is not self-sufficient."
+    },
+    {
+      "arabic": "جُمْلَة إِسْمِيَّة",
+      "english": "Nominal Sentence",
+      "simple_explanation": "A sentence that starts with a noun."
+    }
+  ],
+  "quiz": [
+    {
+      "question_type": "multiple_choice",
+      "question": "Which part of a جُمْلَة إِسْمِيَّة is called المُبْتَدَأ?",
+      "options": [
+        "The predicate",
+        "The subject",
+        "The verb"
+      ],
+      "answer": "The subject",
+      "explanation": "The المُبْتَدَأ is the subject or the word about which information is given."
+    },
+    {
+      "question_type": "true_false",
+      "question": "In a جُمْلَةٌ فِعْلِيَّةٌ, the subject (الفَاعِلُ) is always in the accusative case.",
+      "answer": "False",
+      "explanation": "The subject (الفَاعِلُ) in a جُمْلَةٌ فِعْلِيَّةٌ is always in the nominative case (مَرْفُوعٌ)."
+    },
+    {
+      "question_type": "fill_in_the_blank",
+      "question": "The first part of a جُمْلَة إِسْمِيَّة is called ________.",
+      "answer": "المُبْتَدَأ",
+      "explanation": "The first part of a جُمْلَة إِسْمِيَّة is called المُبْتَدَأ, which means the subject."
+    }
+  ],
+  "exercise_answers": [
+    {
+      "exercise_number": "1.i",
+      "question": "المعلم حاضر",
+      "answer": "المعلم (مُبْتَدَأ) + حاضر (خَبَر)",
+      "reason": "It is a جُمْلَة إِسْمِيَّة where المعلم is the subject and حاضر is the predicate."
+    },
+    {
+      "exercise_number": "1.ii",
+      "question": "البستان جميل",
+      "answer": "البستان (مُبْتَدَأ) + جميل (خَبَر)",
+      "reason": "It is a جُمْلَة إِسْمِيَّة where البستان is the subject and جميل is the predicate."
+    },
+    {
+      "exercise_number": "1.iii",
+      "question": "فتح محمد الباب",
+      "answer": "فتح (فِعْل) + محمد (فَاعِل) + الباب (مَفْعُول)",
+      "reason": "It is a جُمْلَةٌ فِعْلِيَّةٌ where فتح is the verb, محمد is the subject, and الباب is the object."
+    },
+    {
+      "exercise_number": "1.iv",
+      "question": "المدرسة كبيرة نظيفة",
+      "answer": "المدرسة (مُبْتَدَأ) + كبيرة نظيفة (خَبَر)",
+      "reason": "It is a جُمْلَة إِسْمِيَّة where المدرسة is the subject and كبيرة نظيفة are the predicates."
+    },
+    {
+      "exercise_number": "1.v",
+      "question": "وقف الرجل",
+      "answer": "وقف (فِعْل) + الرجل (فَاعِل)",
+      "reason": "It is a جُمْلَةٌ فِعْلِيَّةٌ where وقف is the verb and الرجل is the subject."
+    },
+    {
+      "exercise_number": "1.vi",
+      "question": "الرجل وقف",
+      "answer": "وقف (فِعْل) + الرجل (فَاعِل)",
+      "reason": "It is also a جُمْلَةٌ فِعْلِيَّةٌ but with the verb and subject inverted."
+    },
+    {
+      "exercise_number": "2",
+      "question": "What is the difference between (v) and (vi)?",
+      "answer": "The order of the verb and subject is different.",
+      "reason": "In (v), the verb comes before the subject, while in (vi), the subject comes before the verb, but both convey the same meaning."
+    }
+  ],
+  "teacher_review_flags": []
+}

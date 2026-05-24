@@ -18,12 +18,18 @@ async function requestJson(path, options = {}) {
     },
   });
 
+  const contentType = response.headers.get("content-type") || "";
   const text = await response.text();
-  const data = text ? JSON.parse(text) : null;
+  const isJson = contentType.includes("application/json");
+  const data = text && isJson ? JSON.parse(text) : null;
 
   if (!response.ok) {
     const detail = data?.detail || response.statusText || "Request failed";
     throw new Error(Array.isArray(detail) ? detail.map((item) => item.msg).join(", ") : detail);
+  }
+
+  if (text && !isJson) {
+    throw new Error("The app reached a page instead of the backend API. Please check that the backend is running and VITE_API_BASE_URL points to FastAPI.");
   }
 
   return data;
@@ -519,12 +525,6 @@ function App() {
   const totalPages = selectedBook?.total_pages || 999;
   const maxStartPage = Math.max(1, totalPages);
 
-  const maxEndPage = useMemo(() => {
-    const parsedStart = Number.parseInt(startPage, 10);
-    const rangeMax = Number.isInteger(parsedStart) && parsedStart > 0 ? parsedStart + MAX_PAGES - 1 : MAX_PAGES;
-    return Math.min(rangeMax, totalPages);
-  }, [startPage, totalPages]);
-
   const previewPages = useMemo(() => {
     try {
       return parsePageRange(startPage, endPage).filter((page) => page <= totalPages);
@@ -537,19 +537,14 @@ function App() {
     const parsedStart = Number.parseInt(startPage, 10);
     const parsedEnd = Number.parseInt(endPage, 10);
 
-    if (!Number.isInteger(parsedStart) || parsedStart <= 0) return;
-    const nextStartPage = Math.min(parsedStart, totalPages);
-    if (nextStartPage !== parsedStart) {
-      setStartPage(String(nextStartPage));
-      return;
+    if (Number.isInteger(parsedStart) && parsedStart > totalPages) {
+      setStartPage(String(totalPages));
     }
 
-    if (!Number.isInteger(parsedEnd) || parsedEnd < nextStartPage) {
-      setEndPage(String(nextStartPage));
-    } else if (parsedEnd > maxEndPage) {
-      setEndPage(String(maxEndPage));
+    if (Number.isInteger(parsedEnd) && parsedEnd > totalPages) {
+      setEndPage(String(totalPages));
     }
-  }, [endPage, maxEndPage, startPage, totalPages]);
+  }, [endPage, startPage, totalPages]);
 
   function selectBook(nextBookId, nextBooks = books) {
     const nextBook = nextBooks.find((book) => book.book_id === nextBookId);
@@ -755,8 +750,8 @@ function App() {
                 <span>To</span>
                 <input
                   type="number"
-                  min={startPage || "1"}
-                  max={maxEndPage}
+                  min="1"
+                  max={totalPages}
                   value={endPage}
                   onChange={(event) => setEndPage(event.target.value)}
                 />
