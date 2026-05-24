@@ -1,0 +1,274 @@
+{
+  "sections": [
+    {
+      "section_id": "1.1",
+      "title": "النَّحْوُ – Arabic Grammar",
+      "difficulty_level": "beginner",
+      "mini_lesson": {
+        "simple_intro": "Arabic Grammar, or Nahw, helps you make good sentences. It shows how words work together.",
+        "step_by_step_explanation": [
+          "Nahw teaches how to join nouns, verbs, and particles.",
+          "It tells us about the last letter of words.",
+          "We use Nahw to speak and write Arabic right."
+        ],
+        "think_about_it": {
+          "question": "Why do we need Nahw?",
+          "hint": "Think about making sentences.",
+          "answer": "To make correct sentences and avoid mistakes."
+        },
+        "try_it_yourself": {
+          "task": "Find a noun, verb, and particle in a sentence.",
+          "expected_answer": "Example: دَخَلَ زَيْدٌ الدَّارَ. (Dakhala Zaydun ad-dara).",
+          "simple_reason": "دَخَلَ is a verb, زَيْدٌ is a noun, and الدَّارَ is a noun with a particle."
+        },
+        "common_mistake": null,
+        "tiny_recap": [
+          "Nahw helps make correct sentences.",
+          "It teaches about words and sentences.",
+          "We use Nahw to speak Arabic well."
+        ]
+      },
+      "key_terms": [
+        {
+          "arabic": "إِعْرَابٌ",
+          "english": "condition",
+          "simple_explanation": "The condition of the last letter of a word.",
+          "example_from_text": "what the إِعْرَابٌ (condition) of the last letter of a word should be."
+        },
+        {
+          "arabic": "كَلِمَةٌ",
+          "english": "word",
+          "simple_explanation": "A single unit of language.",
+          "example_from_text": "Its subject matter is كَلِمَةٌ (word) and كَلَامٌ (sentence)."
+        }
+      ],
+      "word_help": [
+        {
+          "arabic": "دَخَلَ",
+          "transliteration": "dakhala",
+          "english": "he entered",
+          "kid_note": "This is a verb.",
+          "why_it_matters": "It shows action in a sentence."
+        },
+        {
+          "arabic": "زَيْدٌ",
+          "transliteration": "zaydun",
+          "english": "Zayd",
+          "kid_note": "This is a person's name.",
+          "why_it_matters": "It is used as an example of a noun."
+        },
+        {
+          "arabic": "دَارٌ",
+          "transliteration": "daarun",
+          "english": "house",
+          "kid_note": "This is a noun.",
+          "why_it_matters": "It is used as an example of a noun."
+        },
+        {
+          "arabic": "فِي",
+          "transliteration": "fi",
+          "english": "in",
+          "kid_note": "This is a particle.",
+          "why_it_matters": "Particles help connect words in a sentence."
+        }
+      ],
+      "flashcards": [
+        {
+          "front": "What is Nahw?",
+          "back": "Science of joining words to make correct sentences.",
+          "arabic_focus": "النَّحْوُ"
+        },
+        {
+          "front": "What does Nahw teach?",
+          "back": "How to join nouns, verbs, and particles.",
+          "arabic_focus": "يعلمنا كيف نجمع كلمة مع كلمة"
+        }
+      ],
+      "quiz": [
+        {
+          "type": "multiple_choice",
+          "question": "What is the main goal of Nahw?",
+          "options": [
+            "To make art",
+            "To make correct sentences",
+            "To cook",
+            "To dance"
+          ],
+          "correct_answer": "To make correct sentences",
+          "simple_explanation": "Nahw helps us join words correctly."
+        },
+        {
+          "type": "true_false",
+          "question": "Nahw teaches us about numbers.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "correct_answer": "False",
+          "simple_explanation": "Nahw teaches about words and sentences, not numbers."
+        }
+      ],
+      "exercise_answers": [],
+      "diagram": null,
+      "teacher_review_flags": []
+    },
+    {
+      "section_id": "1.2",
+      "title": "الْكَلِمَةُ – The Word",
+      "difficulty_level": "beginner",
+      "mini_lesson": {
+        "simple_intro": "A word is called لَفْظٌ. If it means something, it is مَوْضُوعٌ. If not, it is مُهْمَلٌ.",
+        "step_by_step_explanation": [
+          "Words can be مُفْرَدٌ (single) or مُرَكَّبٌ (compound).",
+          "There are three types of words: اِسْمٌ (noun), فِعْلٌ (verb), and حَرْفٌ (particle).",
+          "A noun is a word that makes sense alone and doesn't change with time."
+        ],
+        "think_about_it": {
+          "question": "Can you think of a noun?",
+          "hint": "Think of a person, place, or thing.",
+          "answer": "Examples: رَجُلٌ (man), الْبَيْتُ (house)"
+        },
+        "try_it_yourself": {
+          "task": "Pick a noun from your surroundings.",
+          "expected_answer": "Example: كِتَابٌ (book)",
+          "simple_reason": "It is a single word that makes sense alone."
+        },
+        "common_mistake": {
+          "mistake": "Thinking all words are nouns.",
+          "correction": "Words can be nouns, verbs, or particles."
+        },
+        "tiny_recap": [
+          "Words can mean something or nothing.",
+          "Words can be single or compound.",
+          "Nouns are words that make sense alone."
+        ]
+      },
+      "key_terms": [
+        {
+          "arabic": "لَفْظٌ",
+          "english": "uttered word",
+          "simple_explanation": "Any word said by people.",
+          "example_from_text": "Any word uttered by humans is called a لَفْظٌ."
+        },
+        {
+          "arabic": "مَوْضُوعٌ",
+          "english": "meaningful",
+          "simple_explanation": "A word that has a meaning.",
+          "example_from_text": "If it has a meaning, it is called مَوْضُوعٌ (meaningful)."
+        }
+      ],
+      "word_help": [
+        {
+          "arabic": "رَجُلٌ",
+          "transliteration": "rajulun",
+          "english": "man",
+          "kid_note": "This is a noun.",
+          "why_it_matters": "It is an example of a noun that makes sense alone."
+        },
+        {
+          "arabic": "الْبَيْتُ",
+          "transliteration": "al-baytu",
+          "english": "the house",
+          "kid_note": "This is also a noun.",
+          "why_it_matters": "It is another example of a noun."
+        }
+      ],
+      "flashcards": [
+        {
+          "front": "What is a مَوْضُوعٌ?",
+          "back": "A word with a meaning.",
+          "arabic_focus": "مَوْضُوعٌ"
+        },
+        {
+          "front": "What is a مُهْمَلٌ?",
+          "back": "A word without meaning.",
+          "arabic_focus": "مُهْمَلٌ"
+        }
+      ],
+      "quiz": [
+        {
+          "type": "multiple_choice",
+          "question": "What is a مُفْرَدٌ?",
+          "options": [
+            "A compound word",
+            "A single word",
+            "A meaningless word",
+            "A verb"
+          ],
+          "correct_answer": "A single word",
+          "simple_explanation": "مُفْرَدٌ means a single word that makes sense alone."
+        },
+        {
+          "type": "true_false",
+          "question": "Nouns can have tanween and alif lam at the same time.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "correct_answer": "False",
+          "simple_explanation": "A noun cannot have both tanween and alif lam together."
+        }
+      ],
+      "exercise_answers": [],
+      "diagram": {
+        "type": "classification_tree",
+        "title": "Types of Words",
+        "purpose": "To show the main types of words in Arabic.",
+        "source_example": "There are three types of كَلِمَةٌ: اِسْمٌ, فِعْلٌ, حَرْفٌ.",
+        "nodes": [
+          {
+            "id": "1",
+            "label": "كلمة",
+            "arabic": "كَلِمَةٌ",
+            "english": "Word",
+            "role": "Main category",
+            "color_hint": "blue"
+          },
+          {
+            "id": "2",
+            "label": "اسم",
+            "arabic": "اِسْمٌ",
+            "english": "Noun",
+            "role": "Type of word",
+            "color_hint": "green"
+          },
+          {
+            "id": "3",
+            "label": "فعل",
+            "arabic": "فِعْلٌ",
+            "english": "Verb",
+            "role": "Type of word",
+            "color_hint": "yellow"
+          },
+          {
+            "id": "4",
+            "label": "حرف",
+            "arabic": "حَرْفٌ",
+            "english": "Particle",
+            "role": "Type of word",
+            "color_hint": "red"
+          }
+        ],
+        "connections": [
+          {
+            "from": "1",
+            "to": "2",
+            "label": ""
+          },
+          {
+            "from": "1",
+            "to": "3",
+            "label": ""
+          },
+          {
+            "from": "1",
+            "to": "4",
+            "label": ""
+          }
+        ],
+        "notes": []
+      },
+      "teacher_review_flags": []
+    }
+  ]
+}

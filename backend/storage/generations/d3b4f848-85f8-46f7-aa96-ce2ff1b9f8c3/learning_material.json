@@ -1,0 +1,258 @@
+{
+  "sections": [
+    {
+      "section_id": "1.1",
+      "title": "النَّحْوُ – Arabic Grammar",
+      "difficulty_level": "beginner",
+      "mini_lesson": {
+        "simple_intro": "Nahw is the science that teaches us how to make correct Arabic sentences. It shows us how to put words together right.",
+        "step_by_step_explanation": [
+          "Nahw helps us join nouns, verbs, and particles to make sentences.",
+          "It teaches us about the last letter of words and how it should be.",
+          "The main things in Nahw are words and sentences."
+        ],
+        "think_about_it": {
+          "question": "Why do we need to learn Nahw?",
+          "hint": "Think about how it helps us speak Arabic.",
+          "answer": "We learn Nahw to speak, read, and write Arabic correctly."
+        },
+        "try_it_yourself": {
+          "task": "Try to make a simple sentence using دَخَلَ, دَار, زَيْد, and فِي.",
+          "expected_answer": "زَيْدٌ دَخَلَ فِي الدَّارِ.",
+          "simple_reason": "We put the words together to make a correct sentence."
+        },
+        "common_mistake": null,
+        "tiny_recap": [
+          "Nahw teaches us to make correct Arabic sentences.",
+          "It helps us use Arabic words the right way."
+        ]
+      },
+      "key_terms": [
+        {
+          "arabic": "النَّحْوُ",
+          "english": "Nahw",
+          "simple_explanation": "The science that teaches us to make correct Arabic sentences.",
+          "example_from_text": "Nahw is that science, which teaches us how to join a noun, verb and particle to form a correct sentence."
+        },
+        {
+          "arabic": "الإِعْرَابُ",
+          "english": "I'rab",
+          "simple_explanation": "The condition of the last letter of a word.",
+          "example_from_text": "what the إِعْرَابٌ (condition) of the last letter of a word should be."
+        }
+      ],
+      "flashcards": [
+        {
+          "front": "What is Nahw?",
+          "back": "The science that teaches us to make correct Arabic sentences.",
+          "arabic_focus": "النَّحْوُ"
+        },
+        {
+          "front": "What is I'rab?",
+          "back": "The condition of the last letter of a word.",
+          "arabic_focus": "الإِعْرَابُ"
+        }
+      ],
+      "quiz": [
+        {
+          "type": "multiple_choice",
+          "question": "What does Nahw teach us?",
+          "options": [
+            "How to cook",
+            "How to make correct Arabic sentences",
+            "How to dance",
+            "How to paint"
+          ],
+          "correct_answer": "How to make correct Arabic sentences",
+          "simple_explanation": "Nahw is about making correct Arabic sentences."
+        },
+        {
+          "type": "true_false",
+          "question": "Nahw helps us understand the Qur'an better.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "correct_answer": "True",
+          "simple_explanation": "Nahw teaches us Arabic, which helps us understand the Qur'an."
+        }
+      ],
+      "exercise_answers": [],
+      "diagram": null,
+      "teacher_review_flags": []
+    },
+    {
+      "section_id": "1.2",
+      "title": "الْكَلِمَةُ – The Word",
+      "difficulty_level": "beginner",
+      "mini_lesson": {
+        "simple_intro": "A word in Arabic can be meaningful or meaningless. Meaningful words are either singular or compound.",
+        "step_by_step_explanation": [
+          "A لَفْظٌ مَوْضُوعٌ is a word with meaning.",
+          "A لَفْظٌ مُهْمَلٌ is a word without meaning.",
+          "There are two types of لَفْظٌ مَوْضُوعٌ: مُفْرَدٌ (singular) and مُرَكَّبٌ (compound).",
+          "There are three types of كَلِمَةٌ: اِسْمٌ (noun), فِعْلٌ (verb), and حَرْفٌ (particle)."
+        ],
+        "think_about_it": {
+          "question": "Can you think of a مُفْرَدٌ word?",
+          "hint": "Think of a single word that means something.",
+          "answer": "رَجُلٌ (man) is a مُفْرَدٌ word."
+        },
+        "try_it_yourself": {
+          "task": "Identify if رَجُلٌ is a مُفْرَدٌ or مُرَكَّبٌ.",
+          "expected_answer": "مُفْرَدٌ",
+          "simple_reason": "رَجُلٌ is a single word that means 'man'."
+        },
+        "common_mistake": {
+          "mistake": "Thinking all words are مُفْرَدٌ.",
+          "correction": "Words can be مُفْرَدٌ or مُرَكَّبٌ. Check if it's a single word or a group of words."
+        },
+        "tiny_recap": [
+          "A لَفْظٌ مَوْضُوعٌ has meaning.",
+          "There are مُفْرَدٌ and مُرَكَّبٌ words.",
+          "There are three types of كَلِمَةٌ: اِسْمٌ, فِعْلٌ, and حَرْفٌ."
+        ]
+      },
+      "key_terms": [
+        {
+          "arabic": "الْكَلِمَةُ",
+          "english": "The Word",
+          "simple_explanation": "A word that has meaning.",
+          "example_from_text": "Any word uttered by humans is called a لَفْظٌ. If it has a meaning, it is called مَوْضُوعٌ (meaningful)."
+        },
+        {
+          "arabic": "اِسْمٌ",
+          "english": "Noun",
+          "simple_explanation": "A word that names a person, place, or thing.",
+          "example_from_text": "It is the name of a person, place or thing."
+        },
+        {
+          "arabic": "فِعْلٌ",
+          "english": "Verb",
+          "simple_explanation": "A word that shows an action.",
+          "example_from_text": "It denotes an action."
+        },
+        {
+          "arabic": "حَرْفٌ",
+          "english": "Particle",
+          "simple_explanation": "A word that needs other words to have meaning.",
+          "example_from_text": "It is that كَلِمَةٌ whose meaning cannot be understood without joining an اِسْمٌ or a فِعْلٌ or both to it."
+        }
+      ],
+      "flashcards": [
+        {
+          "front": "What is a لَفْظٌ مَوْضُوعٌ?",
+          "back": "A word with meaning.",
+          "arabic_focus": "لَفْظٌ مَوْضُوعٌ"
+        },
+        {
+          "front": "What is a مُفْرَدٌ?",
+          "back": "A single word that means something.",
+          "arabic_focus": "مُفْرَدٌ"
+        },
+        {
+          "front": "What is a اِسْمٌ?",
+          "back": "A word that names a person, place, or thing.",
+          "arabic_focus": "اِسْمٌ"
+        }
+      ],
+      "quiz": [
+        {
+          "type": "multiple_choice",
+          "question": "What is a مُفْرَدٌ?",
+          "options": [
+            "A group of words",
+            "A single word with meaning",
+            "A meaningless word",
+            "A sentence"
+          ],
+          "correct_answer": "A single word with meaning",
+          "simple_explanation": "A مُفْرَدٌ is a single word that means something."
+        },
+        {
+          "type": "true_false",
+          "question": "A حَرْفٌ needs other words to have meaning.",
+          "options": [
+            "True",
+            "False"
+          ],
+          "correct_answer": "True",
+          "simple_explanation": "A حَرْفٌ cannot stand alone and needs other words."
+        }
+      ],
+      "exercise_answers": [
+        {
+          "exercise_number": "1",
+          "question": "State with reason whether the following words are حَرْفٌ or فِعْلٌ ، اِسْمٌ.",
+          "answer": "i. جَلَسَ (He sat.) is a فِعْلٌ because it shows an action. ii. وَ (and) is a حَرْفٌ because it needs other words to have meaning. iii. بِنْتٌ (girl) is an اِسْمٌ because it names something. iv. كَسَرَ (He broke.) is a فِعْلٌ because it shows an action.",
+          "reason": "We check if the word shows an action, names something, or needs other words to have meaning."
+        },
+        {
+          "exercise_number": "2",
+          "question": "Find the meaning and the plural of the following nouns using a dictionary.",
+          "answer": "i. قَلَمٌ means 'pen' and the plural is أَقْلامٌ. ii. فَصْلٌ means 'season' and the plural is فُصُولٌ. iii. كِتَابٌ means 'book' and the plural is كُتُبٌ. iv. سَبُورَةٌ means 'blackboard' and the plural is سُبُورٌ.",
+          "reason": "We look up each noun in a dictionary to find its meaning and plural."
+        }
+      ],
+      "diagram": {
+        "type": "classification_tree",
+        "title": "Types of Words",
+        "purpose": "To show the different types of words in Arabic.",
+        "source_example": "There are three types of كَلِمَةٌ: اِسْمٌ, فِعْلٌ, and حَرْفٌ.",
+        "nodes": [
+          {
+            "id": "1",
+            "label": "الْكَلِمَةُ",
+            "arabic": "الْكَلِمَةُ",
+            "english": "The Word",
+            "role": "main",
+            "color_hint": "blue"
+          },
+          {
+            "id": "2",
+            "label": "اِسْمٌ",
+            "arabic": "اِسْمٌ",
+            "english": "Noun",
+            "role": "type",
+            "color_hint": "green"
+          },
+          {
+            "id": "3",
+            "label": "فِعْلٌ",
+            "arabic": "فِعْلٌ",
+            "english": "Verb",
+            "role": "type",
+            "color_hint": "yellow"
+          },
+          {
+            "id": "4",
+            "label": "حَرْفٌ",
+            "arabic": "حَرْفٌ",
+            "english": "Particle",
+            "role": "type",
+            "color_hint": "red"
+          }
+        ],
+        "connections": [
+          {
+            "from": "1",
+            "to": "2",
+            "label": ""
+          },
+          {
+            "from": "1",
+            "to": "3",
+            "label": ""
+          },
+          {
+            "from": "1",
+            "to": "4",
+            "label": ""
+          }
+        ],
+        "notes": []
+      },
+      "teacher_review_flags": []
+    }
+  ]
+}

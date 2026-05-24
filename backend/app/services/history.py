@@ -19,6 +19,29 @@ def _load_extraction_metadata(extraction_id: str):
     return read_json(metadata_path)
 
 
+def _normalize_sections(result: dict):
+    sections = result.get("sections")
+
+    if isinstance(sections, list) and sections:
+        return sections
+
+    return [result]
+
+
+def _count_diagrams(sections):
+    return sum(1 for section in sections if section.get("diagram"))
+
+
+def _section_summaries(sections):
+    return [
+        {
+            "section_id": section.get("section_id") or f"section-{index + 1}",
+            "title": section.get("title") or f"Section {index + 1}",
+        }
+        for index, section in enumerate(sections)
+    ]
+
+
 def list_generation_history():
     generations = []
 
@@ -35,24 +58,29 @@ def list_generation_history():
         metadata = read_json(metadata_path)
         result = read_json(result_path)
         extraction = _load_extraction_metadata(metadata.get("extraction_id", ""))
-        mini_lesson = result.get("mini_lesson") or {}
+        sections = _normalize_sections(result)
+        first_section = sections[0] if sections else {}
+        first_mini_lesson = first_section.get("mini_lesson") or {}
 
         generations.append({
             "generation_id": metadata.get("generation_id", generation_dir.name),
             "extraction_id": metadata.get("extraction_id"),
             "book_id": extraction.get("book_id") if extraction else None,
             "pages": extraction.get("pages") if extraction else [],
-            "title": result.get("title") or "Generated learning material",
-            "summary": result.get("summary") or mini_lesson.get("simple_intro") or "",
+            "title": result.get("title") or first_section.get("title") or "Generated learning material",
+            "summary": result.get("summary") or first_section.get("summary") or first_mini_lesson.get("simple_intro") or "",
             "created_at": _iso_from_mtime(result_path),
+            "sections": _section_summaries(sections),
             "counts": {
-                "mini_lesson_steps": len(mini_lesson.get("step_by_step_explanation", [])),
-                "revision_notes": len(result.get("revision_notes", [])),
-                "flashcards": len(result.get("flashcards", [])),
-                "key_terms": len(result.get("key_terms", [])),
-                "quiz": len(result.get("quiz", [])),
-                "exercise_answers": len(result.get("exercise_answers", [])),
-                "diagram": 1 if result.get("diagram") else 0,
+                "sections": len(sections),
+                "mini_lesson_steps": sum(len((section.get("mini_lesson") or {}).get("step_by_step_explanation", [])) for section in sections),
+                "revision_notes": sum(len(section.get("revision_notes", [])) for section in sections),
+                "flashcards": sum(len(section.get("flashcards", [])) for section in sections),
+                "key_terms": sum(len(section.get("key_terms", [])) for section in sections),
+                "word_help": sum(len(section.get("word_help", [])) for section in sections),
+                "quiz": sum(len(section.get("quiz", [])) for section in sections),
+                "exercise_answers": sum(len(section.get("exercise_answers", [])) for section in sections),
+                "diagram": _count_diagrams(sections),
             }
         })
 

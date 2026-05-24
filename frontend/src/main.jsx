@@ -488,11 +488,171 @@ function MiniLessonPanel({ miniLesson, legacyNotes }) {
   );
 }
 
+function normalizeLessonSections(result = {}) {
+  if (Array.isArray(result.sections) && result.sections.length > 0) {
+    return result.sections.map((section, index) => ({
+      ...section,
+      section_id: section.section_id || `section-${index + 1}`,
+      title: section.title || `Lesson section ${index + 1}`,
+    }));
+  }
+
+  return [{
+    ...result,
+    section_id: "section-1",
+    title: result.title || "Today's lesson",
+  }];
+}
+
+function sectionStepCount(section) {
+  return getMiniLessonSteps(section.mini_lesson).length || section.revision_notes?.length || 0;
+}
+
+function sectionSummary(section) {
+  return section.summary || section.mini_lesson?.simple_intro || "";
+}
+
+function sectionHasContent(section) {
+  return Boolean(
+    section.title ||
+    sectionSummary(section) ||
+    sectionStepCount(section) ||
+    lessonHasDiagram(section.diagram) ||
+    ["flashcards", "key_terms", "word_help", "quiz", "exercise_answers"].some(
+      (key) => Array.isArray(section[key]) && section[key].length > 0,
+    ),
+  );
+}
+
+function LessonSectionChooser({ sections, selectedId, onSelect }) {
+  if (sections.length <= 1) return null;
+
+  return (
+    <section className="section-picker" aria-label="Lesson sections">
+      <div className="section-picker-heading">
+        <div>
+          <p className="eyebrow">Step 1</p>
+          <h3>Choose a section</h3>
+        </div>
+        <p>Each section is a small lesson. Pick one, then use the study buttons below.</p>
+      </div>
+      <div className="section-picker-grid">
+        {sections.map((section, index) => (
+          <button
+            className={`section-picker-card ${selectedId === section.section_id ? "active" : ""}`}
+            type="button"
+            key={section.section_id}
+            onClick={() => onSelect(section.section_id)}
+          >
+            <span>Section {index + 1}</span>
+            <strong>{section.title}</strong>
+            {sectionSummary(section) && <small>{renderArabicAwareText(sectionSummary(section))}</small>}
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function normalizeAnswer(value = "") {
+  return String(value).trim().toLowerCase();
+}
+
+function QuizQuestion({ quiz, index }) {
+  const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [isRevealed, setIsRevealed] = useState(false);
+  const options = Array.isArray(quiz.options) ? quiz.options.filter(Boolean) : [];
+  const correctAnswer = quiz.correct_answer || quiz.answer || "";
+  const explanation = quiz.simple_explanation || quiz.explanation || "";
+  const hasOptions = options.length > 0;
+  const isAnswered = Boolean(selectedAnswer) || isRevealed;
+  const isCorrect = selectedAnswer && normalizeAnswer(selectedAnswer) === normalizeAnswer(correctAnswer);
+
+  return (
+    <article className="quiz-card">
+      <span className="pill">{(quiz.type || quiz.question_type || `Question ${index + 1}`).replaceAll("_", " ")}</span>
+      <h4>{renderArabicAwareText(quiz.question || `Question ${index + 1}`)}</h4>
+
+      {hasOptions ? (
+        <div className="quiz-option-grid">
+          {options.map((option, optionIndex) => {
+            const optionIsSelected = selectedAnswer === option;
+            const optionIsCorrect = isAnswered && normalizeAnswer(option) === normalizeAnswer(correctAnswer);
+            const optionIsWrong = optionIsSelected && !optionIsCorrect;
+
+            return (
+              <button
+                className={`quiz-option-button ${optionIsSelected ? "selected" : ""} ${optionIsCorrect ? "correct" : ""} ${optionIsWrong ? "incorrect" : ""}`}
+                type="button"
+                key={`quiz-${index}-option-${optionIndex}`}
+                onClick={() => setSelectedAnswer(option)}
+              >
+                <span>{String.fromCharCode(65 + optionIndex)}</span>
+                <strong>{renderArabicAwareText(option)}</strong>
+              </button>
+            );
+          })}
+        </div>
+      ) : (
+        <button className="show-answer-button" type="button" onClick={() => setIsRevealed(true)}>
+          Show answer
+        </button>
+      )}
+
+      {isAnswered && (
+        <div className={`quiz-feedback ${isCorrect || isRevealed ? "correct" : "incorrect"}`}>
+          {hasOptions && (
+            <strong>{isCorrect ? "Correct." : "Not quite."}</strong>
+          )}
+          {correctAnswer && <p><span>Answer:</span> {renderArabicAwareText(correctAnswer)}</p>}
+          {explanation && <p>{renderArabicAwareText(explanation)}</p>}
+        </div>
+      )}
+    </article>
+  );
+}
+
+function StudyNextAction({ nextSection, onNext }) {
+  if (!nextSection) {
+    return (
+      <div className="study-next-action done">
+        <div>
+          <strong>Section complete</strong>
+          <span>You reached the end of this study path.</span>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="study-next-action">
+      <div>
+        <strong>Ready for the next step?</strong>
+        <span>Move to {nextSection.label.toLowerCase()} when this page feels clear.</span>
+      </div>
+      <button className="primary-button compact" type="button" onClick={onNext}>
+        Next: {nextSection.label}
+      </button>
+    </div>
+  );
+}
+
 function GeneratedContent({ generation }) {
   const [lessonTab, setLessonTab] = useState("overview");
   const result = generation?.result || {};
-  const miniLesson = result.mini_lesson || null;
-  const legacyNotes = result.revision_notes || [];
+  const normalizedSections = useMemo(() => normalizeLessonSections(result), [result]);
+  const [selectedSectionId, setSelectedSectionId] = useState(normalizedSections[0]?.section_id || "section-1");
+
+  useEffect(() => {
+    if (!normalizedSections.some((section) => section.section_id === selectedSectionId)) {
+      setSelectedSectionId(normalizedSections[0]?.section_id || "section-1");
+      setLessonTab("overview");
+    }
+  }, [normalizedSections, selectedSectionId]);
+
+  const activeSection = normalizedSections.find((section) => section.section_id === selectedSectionId) || normalizedSections[0] || {};
+  const miniLesson = activeSection.mini_lesson || null;
+  const legacyNotes = activeSection.revision_notes || [];
   const hasMiniLesson = Boolean(
     miniLesson?.simple_intro ||
     getMiniLessonSteps(miniLesson).length ||
@@ -501,26 +661,22 @@ function GeneratedContent({ generation }) {
     miniLesson?.common_mistake ||
     getRecapItems(miniLesson).length,
   );
-  const diagram = result.diagram || null;
+  const diagram = activeSection.diagram || null;
   const hasDiagram = lessonHasDiagram(diagram);
+  const lessonTitle = result.title || activeSection.title || "Learning material";
   const sections = [
-    { id: "overview", label: "Overview", count: result.summary || miniLesson?.simple_intro || result.title ? 1 : 0 },
-    { id: "notes", label: "Learn", count: getMiniLessonSteps(miniLesson).length || legacyNotes.length },
-    ...(hasDiagram ? [{ id: "diagram", label: "Diagram", count: 1 }] : []),
-    { id: "flashcards", label: "Practice cards", count: result.flashcards?.length || 0 },
-    { id: "terms", label: "Words", count: result.key_terms?.length || 0 },
-    { id: "quiz", label: "Quiz", count: result.quiz?.length || 0 },
-    { id: "exercises", label: "Answers", count: result.exercise_answers?.length || 0 },
+    { id: "overview", label: "Overview", helper: "Start with the big idea" },
+    { id: "notes", label: "Learn", helper: "Read the explanation" },
+    ...(hasDiagram ? [{ id: "diagram", label: "Diagram", helper: "See the idea visually" }] : []),
+    { id: "flashcards", label: "Cards", helper: "Tap to remember" },
+    { id: "terms", label: "Words", helper: "Important vocabulary" },
+    { id: "quiz", label: "Quiz", helper: "Check yourself" },
+    { id: "exercises", label: "Answers", helper: "Workbook help" },
   ];
+  const currentSectionIndex = sections.findIndex((section) => section.id === lessonTab);
+  const nextStudySection = sections[currentSectionIndex + 1] || null;
 
-  const hasAnySection =
-    result.title ||
-    result.summary ||
-    hasMiniLesson ||
-    hasDiagram ||
-    ["revision_notes", "flashcards", "key_terms", "quiz", "exercise_answers"].some(
-      (key) => Array.isArray(result[key]) && result[key].length > 0,
-    );
+  const hasAnySection = normalizedSections.some(sectionHasContent);
 
   if (!hasAnySection) {
     return (
@@ -536,146 +692,162 @@ function GeneratedContent({ generation }) {
       <section className="lesson-hero">
         <div>
           <p className="eyebrow">Your lesson</p>
-          <h2>{result.title || "Learning material"}</h2>
-          <p>Work through the mini lesson, diagram, cards, words, and quiz.</p>
+          <h2>{lessonTitle}</h2>
+          <p>Pick one section and follow the buttons from left to right: overview, learn, cards, words, then quiz.</p>
         </div>
-        <div className="lesson-stats">
-          {result.difficulty_level && <span>{result.difficulty_level}</span>}
-          <span>{getMiniLessonSteps(miniLesson).length || legacyNotes.length} steps</span>
-          <span>{result.flashcards?.length || 0} cards</span>
-          <span>{result.quiz?.length || 0} questions</span>
-        </div>
+        {activeSection.difficulty_level && <span className="difficulty-pill">{activeSection.difficulty_level}</span>}
       </section>
 
-      <div className="lesson-tabs" role="tablist" aria-label="Generated lesson sections">
-        {sections.map((section) => (
-          <button
-            className={`lesson-tab ${lessonTab === section.id ? "active" : ""}`}
-            type="button"
-            key={section.id}
-            onClick={() => setLessonTab(section.id)}
-          >
-            <span>{section.label}</span>
-            <strong>{section.count}</strong>
-          </button>
-        ))}
-      </div>
+      <LessonSectionChooser
+        sections={normalizedSections}
+        selectedId={activeSection.section_id}
+        onSelect={(sectionId) => {
+          setSelectedSectionId(sectionId);
+          setLessonTab("overview");
+        }}
+      />
 
-      {lessonTab === "overview" && (
-        <section className="lesson-panel">
-          <p className="eyebrow">Summary</p>
-          <h3>{result.title || "Today's lesson"}</h3>
-          <p>{renderArabicAwareText(result.summary || miniLesson?.simple_intro || "No summary was returned for this lesson.")}</p>
-        </section>
-      )}
+      <section className="study-layout">
+        <aside className="study-sidebar" aria-label="Study menu">
+          <p className="eyebrow">Study menu</p>
+          {sections.map((section) => (
+            <button
+              className={`study-menu-item ${lessonTab === section.id ? "active" : ""}`}
+              type="button"
+              key={section.id}
+              onClick={() => setLessonTab(section.id)}
+            >
+              <strong>{section.label}</strong>
+              <span>{section.helper}</span>
+            </button>
+          ))}
+        </aside>
 
-      {lessonTab === "notes" && (
-        <section className="lesson-panel">
-          <div className="lesson-section-heading">
-            <p className="eyebrow">Mini lesson</p>
-            <h3>Learn step by step</h3>
-          </div>
-          <MiniLessonPanel miniLesson={miniLesson} legacyNotes={legacyNotes} />
-        </section>
-      )}
-
-      {lessonTab === "diagram" && hasDiagram && (
-        <section className="lesson-panel">
-          <div className="lesson-section-heading">
-            <p className="eyebrow">{diagramLabel(diagram)}</p>
-            <h3>{diagram.title || "Lesson diagram"}</h3>
-            {diagram.purpose && <p>{renderArabicAwareText(diagram.purpose)}</p>}
-            {diagram.source_example && <p className="diagram-source">{renderArabicAwareText(diagram.source_example)}</p>}
-          </div>
-          <DiagramView diagram={diagram} />
-          {Array.isArray(diagram.notes) && diagram.notes.length > 0 && (
-            <ul className="diagram-notes">
-              {diagram.notes.map((note, index) => (
-                <li key={`diagram-note-${index}`}>{renderArabicAwareText(note)}</li>
-              ))}
-            </ul>
+        <div className="study-content">
+          {lessonTab === "overview" && (
+            <section className="lesson-panel">
+              <p className="eyebrow">Summary</p>
+              <h3>{activeSection.title || "Today's lesson"}</h3>
+              <p>{renderArabicAwareText(sectionSummary(activeSection) || "No summary was returned for this lesson section.")}</p>
+            </section>
           )}
-        </section>
-      )}
 
-      {lessonTab === "flashcards" && (
-        <section className="lesson-panel">
-          <div className="lesson-section-heading">
-            <p className="eyebrow">Practice</p>
-            <h3>Tap a card to flip it</h3>
-          </div>
-          <div className="flashcard-grid">
-            {(result.flashcards || []).map((card, index) => (
-              <Flashcard card={card} index={index} key={`flashcard-${index}`} />
-            ))}
-          </div>
-        </section>
-      )}
+          {lessonTab === "notes" && (
+            <section className="lesson-panel">
+              <div className="lesson-section-heading">
+                <p className="eyebrow">Mini lesson</p>
+                <h3>Learn step by step</h3>
+              </div>
+              <MiniLessonPanel miniLesson={miniLesson} legacyNotes={legacyNotes} />
+            </section>
+          )}
 
-      {lessonTab === "terms" && (
-        <section className="lesson-panel">
-          <div className="lesson-section-heading">
-            <p className="eyebrow">Vocabulary</p>
-            <h3>Important words</h3>
-          </div>
-          <div className="term-grid">
-            {(result.key_terms || []).map((term, index) => (
-              <article className="term-card" key={`term-${index}`}>
-                {term.arabic && <p className="arabic">{term.arabic}</p>}
-                <h4>{term.english || "Term"}</h4>
-                <p>{renderArabicAwareText(term.simple_explanation)}</p>
-                {term.example_from_text && <small>{renderArabicAwareText(term.example_from_text)}</small>}
-              </article>
-            ))}
-          </div>
-        </section>
-      )}
+          {lessonTab === "diagram" && hasDiagram && (
+            <section className="lesson-panel">
+              <div className="lesson-section-heading">
+                <p className="eyebrow">{diagramLabel(diagram)}</p>
+                <h3>{diagram.title || "Lesson diagram"}</h3>
+                {diagram.purpose && <p>{renderArabicAwareText(diagram.purpose)}</p>}
+                {diagram.source_example && <p className="diagram-source">{renderArabicAwareText(diagram.source_example)}</p>}
+              </div>
+              <DiagramView diagram={diagram} />
+              {Array.isArray(diagram.notes) && diagram.notes.length > 0 && (
+                <ul className="diagram-notes">
+                  {diagram.notes.map((note, index) => (
+                    <li key={`diagram-note-${index}`}>{renderArabicAwareText(note)}</li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          )}
 
-      {lessonTab === "quiz" && (
-        <section className="lesson-panel">
-          <div className="lesson-section-heading">
-            <p className="eyebrow">Check understanding</p>
-            <h3>Try the quiz</h3>
-          </div>
-          <div className="quiz-list">
-            {(result.quiz || []).map((quiz, index) => (
-              <article className="quiz-card" key={`quiz-${index}`}>
-                <span className="pill">{(quiz.type || quiz.question_type || "question").replaceAll("_", " ")}</span>
-                <h4>{renderArabicAwareText(quiz.question)}</h4>
-                {Array.isArray(quiz.options) && quiz.options.length > 0 && (
-                  <div className="option-list">
-                    {quiz.options.map((option, optionIndex) => (
-                      <span key={`quiz-${index}-option-${optionIndex}`}>{renderArabicAwareText(option)}</span>
-                    ))}
-                  </div>
-                )}
-                {(quiz.correct_answer || quiz.answer) && <p><strong>Answer:</strong> {renderArabicAwareText(quiz.correct_answer || quiz.answer)}</p>}
-                {(quiz.simple_explanation || quiz.explanation) && <p className="muted">{renderArabicAwareText(quiz.simple_explanation || quiz.explanation)}</p>}
-              </article>
-            ))}
-          </div>
-        </section>
-      )}
+          {lessonTab === "flashcards" && (
+            <section className="lesson-panel">
+              <div className="lesson-section-heading">
+                <p className="eyebrow">Practice</p>
+                <h3>Tap a card to flip it</h3>
+              </div>
+              <div className="flashcard-grid">
+                {(activeSection.flashcards || []).map((card, index) => (
+                  <Flashcard card={card} index={index} key={`flashcard-${index}`} />
+                ))}
+              </div>
+            </section>
+          )}
 
-      {lessonTab === "exercises" && (
-        <section className="lesson-panel">
-          <div className="lesson-section-heading">
-            <p className="eyebrow">Workbook</p>
-            <h3>Exercise answers</h3>
-          </div>
-          <div className="exercise-list">
-            {(result.exercise_answers || []).map((exercise, index) => (
-              <article className="exercise-card" key={`exercise-${index}`}>
-                <span className="pill">Exercise {exercise.exercise_number || index + 1}</span>
-                <h4>{renderArabicAwareText(exercise.question)}</h4>
-                {exercise.answer && <p><strong>Answer:</strong> {renderArabicAwareText(exercise.answer)}</p>}
-                {exercise.reason && <p className="muted">{renderArabicAwareText(exercise.reason)}</p>}
-              </article>
-            ))}
-          </div>
-        </section>
-      )}
+          {lessonTab === "terms" && (
+            <section className="lesson-panel">
+              <div className="lesson-section-heading">
+                <p className="eyebrow">Vocabulary</p>
+                <h3>Helpful words</h3>
+              </div>
+              {Array.isArray(activeSection.word_help) && activeSection.word_help.length > 0 && (
+                <div className="word-help-grid">
+                  {activeSection.word_help.map((word, index) => (
+                    <article className="word-help-card" key={`word-help-${index}`}>
+                      {word.arabic && <p className="arabic">{word.arabic}</p>}
+                      <div>
+                        <h4>{word.english || "Helpful word"}</h4>
+                        {word.transliteration && <span>{word.transliteration}</span>}
+                      </div>
+                      {word.kid_note && <p>{renderArabicAwareText(word.kid_note)}</p>}
+                      {word.why_it_matters && <small>{renderArabicAwareText(word.why_it_matters)}</small>}
+                    </article>
+                  ))}
+                </div>
+              )}
+              <div className="term-grid">
+                {(activeSection.key_terms || []).map((term, index) => (
+                  <article className="term-card" key={`term-${index}`}>
+                    {term.arabic && <p className="arabic">{term.arabic}</p>}
+                    <h4>{term.english || "Term"}</h4>
+                    <p>{renderArabicAwareText(term.simple_explanation)}</p>
+                    {term.example_from_text && <small>{renderArabicAwareText(term.example_from_text)}</small>}
+                  </article>
+                ))}
+              </div>
+            </section>
+          )}
 
+          {lessonTab === "quiz" && (
+            <section className="lesson-panel">
+              <div className="lesson-section-heading">
+                <p className="eyebrow">Check understanding</p>
+                <h3>Try the quiz</h3>
+              </div>
+              <div className="quiz-list">
+                {(activeSection.quiz || []).map((quiz, index) => (
+                  <QuizQuestion quiz={quiz} index={index} key={`quiz-${index}`} />
+                ))}
+              </div>
+            </section>
+          )}
+
+          {lessonTab === "exercises" && (
+            <section className="lesson-panel">
+              <div className="lesson-section-heading">
+                <p className="eyebrow">Workbook</p>
+                <h3>Exercise answers</h3>
+              </div>
+              <div className="exercise-list">
+                {(activeSection.exercise_answers || []).map((exercise, index) => (
+                  <article className="exercise-card" key={`exercise-${index}`}>
+                    <span className="pill">Exercise {exercise.exercise_number || index + 1}</span>
+                    <h4>{renderArabicAwareText(exercise.question)}</h4>
+                    {exercise.answer && <p><strong>Answer:</strong> {renderArabicAwareText(exercise.answer)}</p>}
+                    {exercise.reason && <p className="muted">{renderArabicAwareText(exercise.reason)}</p>}
+                  </article>
+                ))}
+              </div>
+            </section>
+          )}
+
+          <StudyNextAction
+            nextSection={nextStudySection}
+            onNext={() => setLessonTab(nextStudySection.id)}
+          />
+        </div>
+      </section>
     </div>
   );
 }
@@ -732,25 +904,21 @@ function HistoryList({ items, selectedId, isLoading, onRefresh, onOpen }) {
             onClick={() => onOpen(item.generation_id)}
           >
             <div className="history-card-topline">
-              <span className="pill">{item.pages?.length ? `Pages ${item.pages.join(", ")}` : "Saved result"}</span>
-              <span>{new Date(item.created_at).toLocaleDateString()}</span>
+              <span className="pill">{item.pages?.length ? `Pages ${item.pages.join(", ")}` : "Saved lesson"}</span>
             </div>
             <h3>{item.title}</h3>
             {item.summary && <p className="history-summary">{item.summary}</p>}
-            <div className="mini-lesson-preview">
-              <span>Lesson steps</span>
-              <strong>{item.counts?.mini_lesson_steps || item.counts?.revision_notes || 0}</strong>
-              <span>Flashcards</span>
-              <strong>{item.counts?.flashcards || 0}</strong>
-              <span>Quiz checks</span>
-              <strong>{item.counts?.quiz || 0}</strong>
-              <span>Diagram</span>
-              <strong>{item.counts?.diagram ? "Yes" : "No"}</strong>
+            <div className="history-section-list" aria-label="Lesson sections">
+              {(item.sections?.length ? item.sections : [{ title: item.title }]).slice(0, 4).map((section, sectionIndex) => (
+                <span className="history-section-chip" key={section.section_id || `history-section-${sectionIndex}`}>
+                  {section.title || `Section ${sectionIndex + 1}`}
+                </span>
+              ))}
+              {(item.sections?.length || 0) > 4 && (
+                <span className="history-section-chip soft">More sections</span>
+              )}
             </div>
-            <div className="history-meta">
-              <span>{item.book_id || "Unknown book"}</span>
-              <span>{new Date(item.created_at).toLocaleTimeString()}</span>
-            </div>
+            <span className="open-lesson-button">Open lesson</span>
           </button>
         ))}
       </div>

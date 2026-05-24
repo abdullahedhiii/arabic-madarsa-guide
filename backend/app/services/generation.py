@@ -129,6 +129,15 @@ INTERACTIVE LESSON RULES:
 - Add a tiny recap at the end.
 - Keep everything beginner-friendly.
 
+ARABIC WORD HELP RULES:
+- Add a small "word_help" list for Arabic words that a beginner may not know.
+- Include names and example words when they appear, such as Zayd, daraba, ism, fi'l, harf, kitab.
+- Keep each meaning very simple, like "Zayd is a person's name" or "daraba means he hit".
+- Add a friendly note that explains why the word matters in this lesson.
+- Use transliteration only as a helper, not as a replacement for Arabic.
+- Do not add words that are not present in the source text.
+- If no helpful Arabic words appear in the section, return an empty list.
+
 FLASHCARD RULES:
 - Make flashcards short and easy.
 - One idea per flashcard.
@@ -212,6 +221,15 @@ OUTPUT FORMAT:
           "english": "",
           "simple_explanation": "",
           "example_from_text": ""
+        }}
+      ],
+      "word_help": [
+        {{
+          "arabic": "",
+          "transliteration": "",
+          "english": "",
+          "kid_note": "",
+          "why_it_matters": ""
         }}
       ],
       "flashcards": [
