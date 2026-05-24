@@ -35,16 +35,56 @@ def safe_json_parse(raw: str) -> dict:
             "raw_output": raw
         }
 
+DIAGRAM_STYLE_GUIDE = """
+Available diagram styles:
+
+1. classification_tree
+Use when the lesson classifies one main concept into smaller types.
+Example: Kalima → Ism / Fi'l / Harf.
+
+2. sentence_anatomy
+Use when the lesson explains parts of a sentence, such as verb, doer, receiver.
+
+3. iraab_color_diagram
+Use when the lesson explains grammatical case, such as Raf', Nasb, Jarr, or Jazm.
+
+4. flowchart
+Use when the lesson gives yes/no rules or steps to identify something.
+
+5. timeline
+Use when the lesson explains tense or time, such as past, present, command.
+
+6. effect_diagram
+Use when a particle or word affects the i'rab/case of another word.
+
+7. jumla_structure
+Use when the lesson explains nominal or verbal sentence structure.
+
+8. dependency_arrows
+Use when the lesson explains relationships between words.
+
+9. morphology_breakdown
+Use when a word is broken into parts, such as article, root, suffix, or plural marker.
+
+10. comparison_cards
+Use when the lesson compares two or more grammar concepts.
+"""
 
 def build_learning_material_prompt(section_markdown: str) -> str:
-    return f"""
-You are an expert Arabic grammar teacher creating learning material for madrasa students.
+   return f"""
+You are an expert Arabic grammar teacher creating EASY and INTERACTIVE learning material for madrasa students.
 
 STUDENT LEVEL:
-- Madrasa student
-- Beginner Arabic grammar
+- Beginner madrasa student
 - Age around 10+
-- Keep explanations simple, clear, and revision-friendly.
+- Assume the student is learning Arabic grammar for the first time.
+- Use very simple English.
+- Use short sentences.
+- Avoid difficult grammar terminology unless the source uses it.
+- When a term is necessary, explain it simply.
+
+MAIN GOAL:
+Create revision material that feels like a friendly mini-lesson, not a hard textbook summary.
 
 CRITICAL ARABIC RULES:
 - Preserve Arabic exactly as provided.
@@ -63,53 +103,83 @@ CRITICAL ARABIC RULES:
 CONTENT RULES:
 - Base everything ONLY on the provided markdown section.
 - Do not add grammar rules not found in the text.
-- Generate proper revision notes, not vague one-line notes.
-- Generate flashcards for revision.
-- Generate quiz questions from the content.
+- Do not make the lesson advanced.
+- Break hard ideas into small steps.
+- Prefer simple explanation over completeness.
+- If the text is unclear, mention it in teacher_review_flags.
 - Solve ONLY the exercises present in the text.
-- If no exercise is present, return an empty exercise_answers array.
-- For exercise answers:
+
+INTERACTIVE LESSON RULES:
+- Start with a very simple explanation of the topic.
+- Add a “Think about it” question.
+- Add a “Try it yourself” mini task.
+- Add a “Common mistake” only if supported by the section.
+- Add a tiny recap at the end.
+- Keep everything beginner-friendly.
+
+FLASHCARD RULES:
+- Make flashcards short and easy.
+- One idea per flashcard.
+- Use Arabic examples from the source when possible.
+- The back side should be simple enough for a 10-year-old.
+
+EXERCISE ANSWER RULES:
+- For each exercise answer:
   - give the correct answer
-  - give a short reason
+  - give a short simple reason
 - For dictionary/plural questions:
   - provide common meaning
   - provide common plural
-- If uncertain, mention it in teacher_review_flags.
-- Return valid JSON only.
+- If unsure, say so in teacher_review_flags.
 
-NOTES REQUIREMENTS:
-- Notes must be useful for exam/revision.
-- Explain the main concept clearly.
-- Include rules mentioned in the text.
-- Include examples from the text.
-- Keep explanations simple.
-- Do not create advanced grammar explanations beyond the text.
+{DIAGRAM_STYLE_GUIDE}
 
-QUIZ REQUIREMENTS:
-- Create beginner-friendly questions.
-- Mix question types:
-  - short_answer
-  - multiple_choice
-  - fill_in_the_blank
-  - true_false
-- Every quiz question must include the answer.
-- Add a short explanation for the answer.
+DIAGRAM RULES:
+- Create a diagram ONLY if it helps explain the section.
+- If no useful diagram applies, set "diagram": null.
+- Choose only one best diagram type from the guide.
+- Use Arabic exactly as provided.
+- Keep diagram labels short.
+- Prefer examples from the section.
+- Do not invent grammar rules for the diagram.
+- Diagram should be simple enough for a beginner.
+- The diagram must be returned as JSON data, not as an image.
+
+Return valid JSON only.
 
 OUTPUT FORMAT:
 {{
   "title": "",
-  "summary": "",
-  "revision_notes": [
+  "difficulty_level": "beginner",
+  "mini_lesson": {{
+    "simple_intro": "",
+    "step_by_step_explanation": [
+      ""
+    ],
+    "think_about_it": {{
+      "question": "",
+      "hint": "",
+      "answer": ""
+    }},
+    "try_it_yourself": {{
+      "task": "",
+      "expected_answer": "",
+      "simple_reason": ""
+    }},
+    "common_mistake": {{
+      "mistake": "",
+      "correction": ""
+    }},
+    "tiny_recap": [
+      ""
+    ]
+  }},
+  "key_terms": [
     {{
-      "heading": "",
-      "explanation": "",
-      "examples": [
-        {{
-          "arabic": "",
-          "english": "",
-          "note": ""
-        }}
-      ]
+      "arabic": "",
+      "english": "",
+      "simple_explanation": "",
+      "example_from_text": ""
     }}
   ],
   "flashcards": [
@@ -117,22 +187,6 @@ OUTPUT FORMAT:
       "front": "",
       "back": "",
       "arabic_focus": ""
-    }}
-  ],
-  "key_terms": [
-    {{
-      "arabic": "",
-      "english": "",
-      "simple_explanation": ""
-    }}
-  ],
-  "quiz": [
-    {{
-      "question_type": "",
-      "question": "",
-      "options": [],
-      "answer": "",
-      "explanation": ""
     }}
   ],
   "exercise_answers": [
@@ -143,8 +197,40 @@ OUTPUT FORMAT:
       "reason": ""
     }}
   ],
+  "diagram": {{
+    "type": "",
+    "title": "",
+    "purpose": "",
+    "source_example": "",
+    "nodes": [
+      {{
+        "id": "",
+        "label": "",
+        "arabic": "",
+        "english": "",
+        "role": "",
+        "color_hint": ""
+      }}
+    ],
+    "connections": [
+      {{
+        "from": "",
+        "to": "",
+        "label": ""
+      }}
+    ],
+    "notes": []
+  }},
   "teacher_review_flags": []
 }}
+
+IMPORTANT:
+- If there is no common mistake supported by the section, use:
+  "common_mistake": null
+- If there is no suitable diagram, use:
+  "diagram": null
+- Do not include markdown outside the JSON.
+- Do not include explanations outside the JSON.
 
 SECTION MARKDOWN:
 
