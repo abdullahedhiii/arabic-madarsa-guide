@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { createRoot } from "react-dom/client";
 import "../styles.css";
 
@@ -220,13 +221,9 @@ function SourcePagesViewer({ lesson }) {
 
   if (!bookId || pages.length === 0) return null;
 
-  return (
-    <>
-      <button className="source-pages-button" type="button" onClick={() => setIsOpen(true)}>
-        View source pages
-      </button>
-
-      {isOpen && (
+  const sourcePagesModal = isOpen ? (
+    createPortal(
+      <>
         <div className="source-pages-backdrop" role="presentation" onClick={() => setIsOpen(false)}>
           <section
             className="source-pages-panel"
@@ -248,9 +245,19 @@ function SourcePagesViewer({ lesson }) {
             <PagePreview bookId={bookId} pages={pages} onOpenPage={setOpenPreviewPage} />
           </section>
         </div>
-      )}
 
-      <PreviewModal bookId={bookId} page={openPreviewPage} onClose={() => setOpenPreviewPage(null)} />
+        <PreviewModal bookId={bookId} page={openPreviewPage} onClose={() => setOpenPreviewPage(null)} />
+      </>,
+      document.body,
+    )
+  ) : null;
+
+  return (
+    <>
+      <button className="source-pages-button" type="button" onClick={() => setIsOpen(true)}>
+        View source pages
+      </button>
+      {sourcePagesModal}
     </>
   );
 }

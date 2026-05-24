@@ -95,19 +95,21 @@ select {
 .source-pages-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 40;
-  display: grid;
-  place-items: center;
-  padding: 24px;
+  z-index: 80;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 72px 24px 24px;
   background: rgba(23, 32, 29, 0.56);
-  overflow: hidden;
+  overflow: auto;
 }
 
 .source-pages-panel {
-  width: min(980px, calc(100vw - 48px));
-  max-height: calc(100dvh - 48px);
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
+  position: relative;
+  width: min(880px, 100%);
+  max-height: calc(100dvh - 96px);
+  display: flex;
+  flex-direction: column;
   border: 1px solid rgba(255, 255, 255, 0.36);
   border-radius: 8px;
   background:
@@ -118,13 +120,17 @@ select {
 }
 
 .source-pages-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
   display: flex;
   align-items: start;
   justify-content: space-between;
   gap: 18px;
-  padding: 20px 22px 16px;
+  flex: 0 0 auto;
+  padding: 18px 20px;
   border-bottom: 1px solid rgba(15, 111, 115, 0.14);
-  background: rgba(255, 253, 248, 0.78);
+  background: rgba(255, 253, 248, 0.98);
 }
 
 .source-pages-header h2 {
@@ -138,15 +144,16 @@ select {
 }
 
 .source-pages-panel .page-preview-grid {
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
   max-height: none;
-  min-height: 0;
-  overflow: auto;
-  padding: 18px 22px 22px;
+  min-height: 180px;
+  overflow-y: auto;
+  padding: 16px 20px 20px;
 }
 
 .source-pages-panel .page-preview-card img {
-  aspect-ratio: 3 / 4;
+  height: clamp(180px, 30dvh, 260px);
+  aspect-ratio: auto;
   object-fit: contain;
   background: #fff;
 }
@@ -368,7 +375,7 @@ select:focus {
 .preview-modal-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 20;
+  z-index: 100;
   display: grid;
   place-items: center;
   padding: 24px;
@@ -376,8 +383,8 @@ select:focus {
 }
 
 .preview-modal {
-  width: min(860px, 100%);
-  max-height: min(92vh, 980px);
+  width: min(760px, 100%);
+  max-height: calc(100dvh - 48px);
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
   border: 1px solid rgba(255, 255, 255, 0.35);
