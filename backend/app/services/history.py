@@ -35,6 +35,7 @@ def list_generation_history():
         metadata = read_json(metadata_path)
         result = read_json(result_path)
         extraction = _load_extraction_metadata(metadata.get("extraction_id", ""))
+        mini_lesson = result.get("mini_lesson") or {}
 
         generations.append({
             "generation_id": metadata.get("generation_id", generation_dir.name),
@@ -42,14 +43,16 @@ def list_generation_history():
             "book_id": extraction.get("book_id") if extraction else None,
             "pages": extraction.get("pages") if extraction else [],
             "title": result.get("title") or "Generated learning material",
-            "summary": result.get("summary") or "",
+            "summary": result.get("summary") or mini_lesson.get("simple_intro") or "",
             "created_at": _iso_from_mtime(result_path),
             "counts": {
+                "mini_lesson_steps": len(mini_lesson.get("step_by_step_explanation", [])),
                 "revision_notes": len(result.get("revision_notes", [])),
                 "flashcards": len(result.get("flashcards", [])),
                 "key_terms": len(result.get("key_terms", [])),
                 "quiz": len(result.get("quiz", [])),
                 "exercise_answers": len(result.get("exercise_answers", [])),
+                "diagram": 1 if result.get("diagram") else 0,
             }
         })
 

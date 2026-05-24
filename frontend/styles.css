@@ -735,6 +735,75 @@ select:focus {
   gap: 12px;
 }
 
+.mini-lesson-layout {
+  display: grid;
+  gap: 18px;
+}
+
+.lesson-intro-card,
+.interactive-card,
+.recap-card {
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  line-height: 1.75;
+}
+
+.lesson-intro-card {
+  border-color: rgba(15, 111, 115, 0.2);
+  background:
+    linear-gradient(135deg, rgba(220, 238, 230, 0.92), rgba(255, 253, 248, 0.96)),
+    #fff;
+  font-size: 1.06rem;
+}
+
+.lesson-steps {
+  display: grid;
+  gap: 12px;
+}
+
+.step-card {
+  position: relative;
+  min-height: 72px;
+  padding: 18px 18px 18px 58px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  line-height: 1.7;
+}
+
+.step-card p {
+  margin: 0;
+}
+
+.interactive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.interactive-card h4 {
+  margin: 6px 0 10px;
+}
+
+.try-card {
+  border-color: rgba(198, 149, 57, 0.34);
+  background: linear-gradient(145deg, #fff, #fff7e5);
+}
+
+.mistake-card {
+  border-color: rgba(189, 93, 85, 0.28);
+  background: linear-gradient(145deg, #fff, #fff0ed);
+}
+
+.recap-card ul,
+.diagram-notes {
+  margin: 10px 0 0;
+  padding-left: 20px;
+  line-height: 1.8;
+}
+
 .note-card,
 .quiz-card,
 .exercise-card,
@@ -797,6 +866,292 @@ select:focus {
 .term-card {
   border-color: rgba(52, 78, 134, 0.18);
   background: linear-gradient(145deg, #fff, var(--lavender));
+}
+
+.term-card small {
+  display: block;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(52, 78, 134, 0.16);
+  line-height: 1.7;
+}
+
+.diagram-source {
+  display: inline-flex;
+  margin-top: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: var(--accent-dark);
+  background: var(--mint);
+  font-weight: 800;
+}
+
+.diagram-card {
+  display: grid;
+  gap: 16px;
+  padding: 22px;
+  border: 1px solid rgba(15, 111, 115, 0.18);
+  border-radius: 8px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(220, 238, 230, 0.56)),
+    #fff;
+}
+
+.diagram-node,
+.iraab-chip,
+.morph-part {
+  display: grid;
+  gap: 5px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  text-align: center;
+}
+
+.diagram-node strong,
+.iraab-chip strong,
+.morph-part strong {
+  color: var(--ink);
+}
+
+.diagram-node small,
+.diagram-node em,
+.iraab-chip small,
+.morph-part small {
+  color: var(--muted);
+  font-style: normal;
+}
+
+.diagram-arabic {
+  direction: rtl;
+  font-family: var(--arabic-font);
+  color: var(--teal);
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.8;
+  word-spacing: 0.12em;
+}
+
+.classification-tree {
+  position: relative;
+  padding: 28px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top, rgba(220, 238, 230, 0.96), transparent 46%),
+    linear-gradient(135deg, rgba(255, 253, 248, 0.98), rgba(230, 229, 244, 0.42)),
+    #fff;
+}
+
+.classification-tree::before {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(15, 111, 115, 0.08);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.tree-group {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+}
+
+.tree-root-wrap {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+}
+
+.tree-label,
+.tree-helper {
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  border-radius: 999px;
+  color: var(--accent-dark);
+  background: rgba(220, 238, 230, 0.96);
+  font-size: 0.8rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.tree-helper {
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.84);
+  text-transform: none;
+}
+
+.root-node {
+  min-width: min(280px, 100%);
+  border: 2px solid var(--teal);
+  background:
+    linear-gradient(145deg, #fff, var(--mint)),
+    #fff;
+  box-shadow: 0 18px 38px rgba(15, 111, 115, 0.18);
+}
+
+.tree-branches {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  padding-top: 14px;
+}
+
+.tree-branches::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(15, 111, 115, 0.3), transparent);
+}
+
+.tree-branch {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+}
+
+.tree-branch::before {
+  content: "";
+  width: 2px;
+  height: 14px;
+  display: block;
+  background: rgba(15, 111, 115, 0.28);
+}
+
+.connection-label {
+  justify-self: center;
+  min-height: 26px;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: var(--accent-dark);
+  background: rgba(220, 238, 230, 0.9);
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
+.tree-branch .diagram-node {
+  width: 100%;
+  min-height: 130px;
+  align-content: center;
+  border-color: rgba(15, 111, 115, 0.18);
+  background:
+    linear-gradient(180deg, #fff, rgba(244, 247, 241, 0.78)),
+    #fff;
+  box-shadow: 0 12px 26px rgba(23, 32, 29, 0.08);
+}
+
+.tree-branch:nth-child(1) .diagram-node {
+  border-color: rgba(15, 111, 115, 0.26);
+  background: linear-gradient(180deg, #fff, rgba(220, 238, 230, 0.82));
+}
+
+.tree-branch:nth-child(2) .diagram-node {
+  border-color: rgba(198, 149, 57, 0.32);
+  background: linear-gradient(180deg, #fff, rgba(255, 247, 229, 0.92));
+}
+
+.tree-branch:nth-child(3) .diagram-node {
+  border-color: rgba(52, 78, 134, 0.24);
+  background: linear-gradient(180deg, #fff, rgba(230, 229, 244, 0.8));
+}
+
+.classification-tree .diagram-arabic {
+  font-size: 2.35rem;
+}
+
+.classification-tree .root-node .diagram-arabic {
+  font-size: 3rem;
+}
+
+.classification-tree .diagram-node strong {
+  font-size: 1.05rem;
+}
+
+.diagram-flow,
+.diagram-timeline {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.diagram-step {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.step-number {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color: white;
+  background: var(--teal);
+  font-weight: 900;
+}
+
+.diagram-comparison,
+.iraab-grid,
+.relationship-nodes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+}
+
+.morphology-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.morph-part {
+  min-width: 160px;
+  flex: 1;
+  border-color: rgba(198, 149, 57, 0.34);
+  background: linear-gradient(145deg, #fff, #fff7e5);
+}
+
+.iraab-chip {
+  border-color: rgba(52, 78, 134, 0.2);
+  background: linear-gradient(145deg, #fff, var(--lavender));
+}
+
+.relationship-map {
+  gap: 18px;
+}
+
+.relationship-lines {
+  display: grid;
+  gap: 8px;
+}
+
+.relationship-line {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px dashed rgba(15, 111, 115, 0.28);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.relationship-line strong {
+  color: var(--teal);
+  font-size: 0.82rem;
 }
 
 .option-list {

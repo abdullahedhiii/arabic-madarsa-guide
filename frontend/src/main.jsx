@@ -248,12 +248,265 @@ function Flashcard({ card, index }) {
   );
 }
 
+function getMiniLessonSteps(miniLesson) {
+  return Array.isArray(miniLesson?.step_by_step_explanation) ? miniLesson.step_by_step_explanation.filter(Boolean) : [];
+}
+
+function getRecapItems(miniLesson) {
+  return Array.isArray(miniLesson?.tiny_recap) ? miniLesson.tiny_recap.filter(Boolean) : [];
+}
+
+function lessonHasDiagram(diagram) {
+  return Boolean(diagram && (diagram.title || diagram.purpose || diagram.source_example || diagram.nodes?.length || diagram.connections?.length));
+}
+
+function diagramLabel(diagram) {
+  return (diagram?.type || "diagram").replaceAll("_", " ");
+}
+
+function diagramNodeContent(node) {
+  return (
+    <>
+      {node.arabic && <span className="diagram-arabic">{node.arabic}</span>}
+      <strong>{node.label || node.english || node.id}</strong>
+      {node.english && node.english !== node.label && <small>{renderArabicAwareText(node.english)}</small>}
+      {node.role && <em>{renderArabicAwareText(node.role)}</em>}
+    </>
+  );
+}
+
+function DiagramView({ diagram }) {
+  if (!lessonHasDiagram(diagram)) return null;
+
+  const nodes = diagram.nodes || [];
+  const connections = diagram.connections || [];
+  const incomingIds = new Set(connections.map((connection) => connection.to));
+  const rootNodes = nodes.filter((node) => !incomingIds.has(node.id));
+  const visibleRoots = rootNodes.length ? rootNodes : nodes.slice(0, 1);
+  const style = diagram.type || "diagram";
+
+  function childrenFor(nodeId) {
+    return connections
+      .filter((connection) => connection.from === nodeId)
+      .map((connection) => ({
+        connection,
+        node: nodes.find((item) => item.id === connection.to),
+      }))
+      .filter((item) => item.node);
+  }
+
+  if (style === "classification_tree") {
+    return (
+      <section className="diagram-card diagram-tree classification-tree">
+        {visibleRoots.map((root) => (
+          <div className="tree-group" key={root.id}>
+            <div className="tree-root-wrap">
+              <span className="tree-label">Main idea</span>
+              <div className="diagram-node root-node">{diagramNodeContent(root)}</div>
+            </div>
+            <div className="tree-helper">splits into</div>
+            <div className="tree-branches">
+              {childrenFor(root.id).map(({ connection, node }, index) => (
+                <div className="tree-branch" key={`${connection.from}-${connection.to}`}>
+                  <span className="connection-label">{connection.label ? renderArabicAwareText(connection.label) : `Type ${index + 1}`}</span>
+                  <div className="diagram-node">{diagramNodeContent(node)}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </section>
+    );
+  }
+
+  if (style === "timeline" || style === "flowchart") {
+    return (
+      <section className={`diagram-card ${style === "timeline" ? "diagram-timeline" : "diagram-flow"}`}>
+        {nodes.map((node, index) => (
+          <div className="diagram-step" key={node.id || index}>
+            <span className="step-number">{index + 1}</span>
+            <div className="diagram-node">{diagramNodeContent(node)}</div>
+          </div>
+        ))}
+      </section>
+    );
+  }
+
+  if (style === "comparison_cards") {
+    return (
+      <section className="diagram-card diagram-comparison">
+        {nodes.map((node) => (
+          <article className="diagram-node comparison-node" key={node.id}>
+            {diagramNodeContent(node)}
+          </article>
+        ))}
+      </section>
+    );
+  }
+
+  if (style === "morphology_breakdown") {
+    return (
+      <section className="diagram-card morphology-strip">
+        {nodes.map((node) => (
+          <div className="morph-part" key={node.id}>
+            {diagramNodeContent(node)}
+          </div>
+        ))}
+      </section>
+    );
+  }
+
+  if (style === "iraab_color_diagram") {
+    return (
+      <section className="diagram-card iraab-grid">
+        {nodes.map((node) => (
+          <div className={`iraab-chip ${node.color_hint || ""}`} key={node.id}>
+            {diagramNodeContent(node)}
+          </div>
+        ))}
+      </section>
+    );
+  }
+
+  return (
+    <section className="diagram-card relationship-map">
+      <div className="relationship-nodes">
+        {nodes.map((node) => (
+          <div className="diagram-node" key={node.id}>
+            {diagramNodeContent(node)}
+          </div>
+        ))}
+      </div>
+      {connections.length > 0 && (
+        <div className="relationship-lines">
+          {connections.map((connection, index) => {
+            const from = nodes.find((node) => node.id === connection.from);
+            const to = nodes.find((node) => node.id === connection.to);
+
+            return (
+              <div className="relationship-line" key={`${connection.from}-${connection.to}-${index}`}>
+                <span>{renderArabicAwareText(from?.label || from?.arabic || connection.from)}</span>
+                <strong>{connection.label ? renderArabicAwareText(connection.label) : "connects to"}</strong>
+                <span>{renderArabicAwareText(to?.label || to?.arabic || connection.to)}</span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function MiniLessonPanel({ miniLesson, legacyNotes }) {
+  const steps = getMiniLessonSteps(miniLesson);
+  const recapItems = getRecapItems(miniLesson);
+
+  if (!miniLesson && legacyNotes?.length) {
+    return (
+      <div className="notes-list">
+        {legacyNotes.map((note, index) => (
+          <article className="note-card" key={`note-${index}`}>
+            <span className="note-number">{index + 1}</span>
+            <h4>{renderArabicAwareText(note.heading || "Note")}</h4>
+            {note.explanation && <p>{renderArabicAwareText(note.explanation)}</p>}
+            {(note.examples || []).length > 0 && (
+              <div className="example-strip">
+                {(note.examples || []).map((example, exampleIndex) => (
+                  <div className="example-chip" key={`note-${index}-example-${exampleIndex}`}>
+                    {example.arabic && <span className="arabic">{example.arabic}</span>}
+                    {example.english && <span>{renderArabicAwareText(example.english)}</span>}
+                    {example.note && <small>{renderArabicAwareText(example.note)}</small>}
+                  </div>
+                ))}
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="mini-lesson-layout">
+      {miniLesson?.simple_intro && (
+        <article className="lesson-intro-card">
+          <p className="eyebrow">Big idea</p>
+          <p>{renderArabicAwareText(miniLesson.simple_intro)}</p>
+        </article>
+      )}
+
+      {steps.length > 0 && (
+        <div className="lesson-steps">
+          {steps.map((step, index) => (
+            <article className="step-card" key={`step-${index}`}>
+              <span className="note-number">{index + 1}</span>
+              <p>{renderArabicAwareText(step)}</p>
+            </article>
+          ))}
+        </div>
+      )}
+
+      <div className="interactive-grid">
+        {miniLesson?.think_about_it && (
+          <article className="interactive-card">
+            <p className="eyebrow">Think about it</p>
+            <h4>{renderArabicAwareText(miniLesson.think_about_it.question)}</h4>
+            {miniLesson.think_about_it.hint && <p><strong>Hint:</strong> {renderArabicAwareText(miniLesson.think_about_it.hint)}</p>}
+            {miniLesson.think_about_it.answer && <p className="muted"><strong>Answer:</strong> {renderArabicAwareText(miniLesson.think_about_it.answer)}</p>}
+          </article>
+        )}
+
+        {miniLesson?.try_it_yourself && (
+          <article className="interactive-card try-card">
+            <p className="eyebrow">Try it yourself</p>
+            <h4>{renderArabicAwareText(miniLesson.try_it_yourself.task)}</h4>
+            {miniLesson.try_it_yourself.expected_answer && <p><strong>Expected:</strong> {renderArabicAwareText(miniLesson.try_it_yourself.expected_answer)}</p>}
+            {miniLesson.try_it_yourself.simple_reason && <p className="muted">{renderArabicAwareText(miniLesson.try_it_yourself.simple_reason)}</p>}
+          </article>
+        )}
+
+        {miniLesson?.common_mistake && (
+          <article className="interactive-card mistake-card">
+            <p className="eyebrow">Common mistake</p>
+            <p>{renderArabicAwareText(miniLesson.common_mistake.mistake)}</p>
+            {miniLesson.common_mistake.correction && <p><strong>Fix:</strong> {renderArabicAwareText(miniLesson.common_mistake.correction)}</p>}
+          </article>
+        )}
+      </div>
+
+      {recapItems.length > 0 && (
+        <article className="recap-card">
+          <p className="eyebrow">Tiny recap</p>
+          <ul>
+            {recapItems.map((item, index) => (
+              <li key={`recap-${index}`}>{renderArabicAwareText(item)}</li>
+            ))}
+          </ul>
+        </article>
+      )}
+    </div>
+  );
+}
+
 function GeneratedContent({ generation }) {
   const [lessonTab, setLessonTab] = useState("overview");
   const result = generation?.result || {};
+  const miniLesson = result.mini_lesson || null;
+  const legacyNotes = result.revision_notes || [];
+  const hasMiniLesson = Boolean(
+    miniLesson?.simple_intro ||
+    getMiniLessonSteps(miniLesson).length ||
+    miniLesson?.think_about_it ||
+    miniLesson?.try_it_yourself ||
+    miniLesson?.common_mistake ||
+    getRecapItems(miniLesson).length,
+  );
+  const diagram = result.diagram || null;
+  const hasDiagram = lessonHasDiagram(diagram);
   const sections = [
-    { id: "overview", label: "Overview", count: result.summary || result.title ? 1 : 0 },
-    { id: "notes", label: "Learn", count: result.revision_notes?.length || 0 },
+    { id: "overview", label: "Overview", count: result.summary || miniLesson?.simple_intro || result.title ? 1 : 0 },
+    { id: "notes", label: "Learn", count: getMiniLessonSteps(miniLesson).length || legacyNotes.length },
+    ...(hasDiagram ? [{ id: "diagram", label: "Diagram", count: 1 }] : []),
     { id: "flashcards", label: "Practice cards", count: result.flashcards?.length || 0 },
     { id: "terms", label: "Words", count: result.key_terms?.length || 0 },
     { id: "quiz", label: "Quiz", count: result.quiz?.length || 0 },
@@ -263,7 +516,9 @@ function GeneratedContent({ generation }) {
   const hasAnySection =
     result.title ||
     result.summary ||
-    ["revision_notes", "flashcards", "key_terms", "quiz", "exercise_answers", "teacher_review_flags"].some(
+    hasMiniLesson ||
+    hasDiagram ||
+    ["revision_notes", "flashcards", "key_terms", "quiz", "exercise_answers"].some(
       (key) => Array.isArray(result[key]) && result[key].length > 0,
     );
 
@@ -282,10 +537,11 @@ function GeneratedContent({ generation }) {
         <div>
           <p className="eyebrow">Your lesson</p>
           <h2>{result.title || "Learning material"}</h2>
-          <p>Work through the sections one by one. Start with the summary, then try the cards and quiz.</p>
+          <p>Work through the mini lesson, diagram, cards, words, and quiz.</p>
         </div>
         <div className="lesson-stats">
-          <span>{result.revision_notes?.length || 0} lessons</span>
+          {result.difficulty_level && <span>{result.difficulty_level}</span>}
+          <span>{getMiniLessonSteps(miniLesson).length || legacyNotes.length} steps</span>
           <span>{result.flashcards?.length || 0} cards</span>
           <span>{result.quiz?.length || 0} questions</span>
         </div>
@@ -309,36 +565,36 @@ function GeneratedContent({ generation }) {
         <section className="lesson-panel">
           <p className="eyebrow">Summary</p>
           <h3>{result.title || "Today's lesson"}</h3>
-          <p>{renderArabicAwareText(result.summary || "No summary was returned for this lesson.")}</p>
+          <p>{renderArabicAwareText(result.summary || miniLesson?.simple_intro || "No summary was returned for this lesson.")}</p>
         </section>
       )}
 
       {lessonTab === "notes" && (
         <section className="lesson-panel">
           <div className="lesson-section-heading">
-            <p className="eyebrow">Revision</p>
-            <h3>Learn the main ideas</h3>
+            <p className="eyebrow">Mini lesson</p>
+            <h3>Learn step by step</h3>
           </div>
-          <div className="notes-list">
-            {(result.revision_notes || []).map((note, index) => (
-              <article className="note-card" key={`note-${index}`}>
-                <span className="note-number">{index + 1}</span>
-                <h4>{renderArabicAwareText(note.heading || "Note")}</h4>
-                {note.explanation && <p>{renderArabicAwareText(note.explanation)}</p>}
-                {(note.examples || []).length > 0 && (
-                  <div className="example-strip">
-                    {(note.examples || []).map((example, exampleIndex) => (
-                      <div className="example-chip" key={`note-${index}-example-${exampleIndex}`}>
-                        {example.arabic && <span className="arabic">{example.arabic}</span>}
-                        {example.english && <span>{renderArabicAwareText(example.english)}</span>}
-                        {example.note && <small>{renderArabicAwareText(example.note)}</small>}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </article>
-            ))}
+          <MiniLessonPanel miniLesson={miniLesson} legacyNotes={legacyNotes} />
+        </section>
+      )}
+
+      {lessonTab === "diagram" && hasDiagram && (
+        <section className="lesson-panel">
+          <div className="lesson-section-heading">
+            <p className="eyebrow">{diagramLabel(diagram)}</p>
+            <h3>{diagram.title || "Lesson diagram"}</h3>
+            {diagram.purpose && <p>{renderArabicAwareText(diagram.purpose)}</p>}
+            {diagram.source_example && <p className="diagram-source">{renderArabicAwareText(diagram.source_example)}</p>}
           </div>
+          <DiagramView diagram={diagram} />
+          {Array.isArray(diagram.notes) && diagram.notes.length > 0 && (
+            <ul className="diagram-notes">
+              {diagram.notes.map((note, index) => (
+                <li key={`diagram-note-${index}`}>{renderArabicAwareText(note)}</li>
+              ))}
+            </ul>
+          )}
         </section>
       )}
 
@@ -368,6 +624,7 @@ function GeneratedContent({ generation }) {
                 {term.arabic && <p className="arabic">{term.arabic}</p>}
                 <h4>{term.english || "Term"}</h4>
                 <p>{renderArabicAwareText(term.simple_explanation)}</p>
+                {term.example_from_text && <small>{renderArabicAwareText(term.example_from_text)}</small>}
               </article>
             ))}
           </div>
@@ -383,7 +640,7 @@ function GeneratedContent({ generation }) {
           <div className="quiz-list">
             {(result.quiz || []).map((quiz, index) => (
               <article className="quiz-card" key={`quiz-${index}`}>
-                <span className="pill">{quiz.question_type || "question"}</span>
+                <span className="pill">{(quiz.type || quiz.question_type || "question").replaceAll("_", " ")}</span>
                 <h4>{renderArabicAwareText(quiz.question)}</h4>
                 {Array.isArray(quiz.options) && quiz.options.length > 0 && (
                   <div className="option-list">
@@ -392,8 +649,8 @@ function GeneratedContent({ generation }) {
                     ))}
                   </div>
                 )}
-                {quiz.answer && <p><strong>Answer:</strong> {renderArabicAwareText(quiz.answer)}</p>}
-                {quiz.explanation && <p className="muted">{renderArabicAwareText(quiz.explanation)}</p>}
+                {(quiz.correct_answer || quiz.answer) && <p><strong>Answer:</strong> {renderArabicAwareText(quiz.correct_answer || quiz.answer)}</p>}
+                {(quiz.simple_explanation || quiz.explanation) && <p className="muted">{renderArabicAwareText(quiz.simple_explanation || quiz.explanation)}</p>}
               </article>
             ))}
           </div>
@@ -481,12 +738,14 @@ function HistoryList({ items, selectedId, isLoading, onRefresh, onOpen }) {
             <h3>{item.title}</h3>
             {item.summary && <p className="history-summary">{item.summary}</p>}
             <div className="mini-lesson-preview">
-              <span>Revision plan</span>
-              <strong>{item.counts?.revision_notes || 0}</strong>
+              <span>Lesson steps</span>
+              <strong>{item.counts?.mini_lesson_steps || item.counts?.revision_notes || 0}</strong>
               <span>Flashcards</span>
               <strong>{item.counts?.flashcards || 0}</strong>
               <span>Quiz checks</span>
               <strong>{item.counts?.quiz || 0}</strong>
+              <span>Diagram</span>
+              <strong>{item.counts?.diagram ? "Yes" : "No"}</strong>
             </div>
             <div className="history-meta">
               <span>{item.book_id || "Unknown book"}</span>

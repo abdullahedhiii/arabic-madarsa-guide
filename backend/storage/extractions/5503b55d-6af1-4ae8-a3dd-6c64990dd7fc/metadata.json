@@ -1,0 +1,10 @@
+{
+  "extraction_id": "5503b55d-6af1-4ae8-a3dd-6c64990dd7fc",
+  "book_id": "Tasheel-un-nahw-ver-2-1-updated4",
+  "pages": [
+    20,
+    21,
+    22
+  ],
+  "model": "qwen/qwen2.5-vl-72b-instruct"
+}

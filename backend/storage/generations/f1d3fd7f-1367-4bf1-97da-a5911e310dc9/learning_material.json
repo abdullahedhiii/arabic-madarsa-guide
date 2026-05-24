@@ -1,0 +1,192 @@
+{
+  "title": "Arabic Grammar Basics: Words and Their Types",
+  "difficulty_level": "beginner",
+  "mini_lesson": {
+    "simple_intro": "Let's learn about words in Arabic! Words help us make sentences.",
+    "step_by_step_explanation": [
+      "Words in Arabic are called كَلِمَةٌ. They can be meaningful or meaningless.",
+      "Meaningful words are مَوْضُوعٌ. They tell us something.",
+      "Meaningless words are مُهْمَلٌ. They don't tell us anything.",
+      "Meaningful words can be مُفْرَدٌ (single) or مُرَكَّبٌ (compound).",
+      "There are three types of words: اِسْمٌ (noun), فِعْلٌ (verb), and حَرْفٌ (particle)."
+    ],
+    "think_about_it": {
+      "question": "Can you think of a word that names something?",
+      "hint": "Think of a person, place, or thing.",
+      "answer": "Examples are رَجُلٌ (man) or أَلْبَيْتُ (house)."
+    },
+    "try_it_yourself": {
+      "task": "Identify if رَجُلٌ is a noun, verb, or particle.",
+      "expected_answer": "noun",
+      "simple_reason": "رَجُلٌ names a person."
+    },
+    "common_mistake": {
+      "mistake": "Thinking all words are nouns.",
+      "correction": "Words can also be verbs or particles."
+    },
+    "tiny_recap": [
+      "Words are كَلِمَةٌ in Arabic.",
+      "Meaningful words are مَوْضُوعٌ.",
+      "There are three types: اِسْمٌ, فِعْلٌ, and حَرْفٌ."
+    ]
+  },
+  "key_terms": [
+    {
+      "arabic": "كَلِمَةٌ",
+      "english": "word",
+      "simple_explanation": "A unit of language that means something.",
+      "example_from_text": "رَجُلٌ, دَارٌ"
+    },
+    {
+      "arabic": "اِسْمٌ",
+      "english": "noun",
+      "simple_explanation": "Names a person, place, or thing.",
+      "example_from_text": "رَجُلٌ, أَلْبَيْتُ"
+    },
+    {
+      "arabic": "فِعْلٌ",
+      "english": "verb",
+      "simple_explanation": "Shows an action.",
+      "example_from_text": "ضَرَبَ, نَصَرَ"
+    },
+    {
+      "arabic": "حَرْفٌ",
+      "english": "particle",
+      "simple_explanation": "Needs other words to make sense.",
+      "example_from_text": "مِنْ, عَلَى"
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "What is كَلِمَةٌ?",
+      "back": "A word in Arabic that means something.",
+      "arabic_focus": "كَلِمَةٌ"
+    },
+    {
+      "front": "What is اِسْمٌ?",
+      "back": "A noun that names something like a person or place.",
+      "arabic_focus": "اِسْمٌ"
+    },
+    {
+      "front": "What is فِعْلٌ?",
+      "back": "A verb that shows an action.",
+      "arabic_focus": "فِعْلٌ"
+    },
+    {
+      "front": "What is حَرْفٌ?",
+      "back": "A particle that needs other words to make sense.",
+      "arabic_focus": "حَرْفٌ"
+    }
+  ],
+  "quiz": [
+    {
+      "type": "multiple_choice",
+      "question": "Which word is a noun?",
+      "options": [
+        "ضَرَبَ",
+        "رَجُلٌ",
+        "مِنْ",
+        "وَ"
+      ],
+      "correct_answer": "رَجُلٌ",
+      "simple_explanation": "رَجُلٌ names a person."
+    },
+    {
+      "type": "fill_blank",
+      "question": "The word رَجُلٌ is a _____.",
+      "options": [],
+      "correct_answer": "اِسْمٌ",
+      "simple_explanation": "It names a person."
+    },
+    {
+      "type": "true_false",
+      "question": "The word ضَرَبَ is a verb.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "True",
+      "simple_explanation": "It shows an action."
+    },
+    {
+      "type": "short_answer",
+      "question": "What does the word مِنْ mean?",
+      "options": [],
+      "correct_answer": "from",
+      "simple_explanation": "It is a particle that means 'from'."
+    }
+  ],
+  "exercise_answers": [
+    {
+      "exercise_number": "1",
+      "question": "State with reason whether the following words are حَرْفٌ فِعْلٌ ، اِسْمٌ or .",
+      "answer": "i. جَلَسَ is فِعْلٌ because it shows an action. ii. وَ is حَرْفٌ because it needs other words to make sense. iii. بِنْتٌ is اِسْمٌ because it names a girl. iv. كَسَرَ is فِعْلٌ because it shows an action.",
+      "reason": "Based on the definitions of اِسْمٌ, فِعْلٌ, and حَرْفٌ."
+    },
+    {
+      "exercise_number": "2",
+      "question": "Find the meaning and the plural of the following nouns using a dictionary.",
+      "answer": "i. قَلَمٌ means pen, plural is أَقْلامٌ. ii. فَصْلٌ means season, plural is فُصُولٌ. iii. كِتَابٌ means book, plural is كُتُبٌ. iv. سَبْوَرَةٌ means blackboard, plural is سَبَوَاتٌ.",
+      "reason": "These meanings and plurals are commonly known."
+    }
+  ],
+  "diagram": {
+    "type": "classification_tree",
+    "title": "Types of Words in Arabic",
+    "purpose": "To show the different types of words.",
+    "source_example": "رَجُلٌ, ضَرَبَ, مِنْ",
+    "nodes": [
+      {
+        "id": "1",
+        "label": "كلمة",
+        "arabic": "كَلِمَةٌ",
+        "english": "Word",
+        "role": "Main category",
+        "color_hint": "blue"
+      },
+      {
+        "id": "2",
+        "label": "اسم",
+        "arabic": "اِسْمٌ",
+        "english": "Noun",
+        "role": "Subcategory",
+        "color_hint": "green"
+      },
+      {
+        "id": "3",
+        "label": "فعل",
+        "arabic": "فِعْلٌ",
+        "english": "Verb",
+        "role": "Subcategory",
+        "color_hint": "yellow"
+      },
+      {
+        "id": "4",
+        "label": "حرف",
+        "arabic": "حَرْفٌ",
+        "english": "Particle",
+        "role": "Subcategory",
+        "color_hint": "red"
+      }
+    ],
+    "connections": [
+      {
+        "from": "1",
+        "to": "2",
+        "label": ""
+      },
+      {
+        "from": "1",
+        "to": "3",
+        "label": ""
+      },
+      {
+        "from": "1",
+        "to": "4",
+        "label": ""
+      }
+    ],
+    "notes": []
+  },
+  "teacher_review_flags": []
+}
