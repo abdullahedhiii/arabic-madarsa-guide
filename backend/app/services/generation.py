@@ -123,6 +123,24 @@ FLASHCARD RULES:
 - Use Arabic examples from the source when possible.
 - The back side should be simple enough for a 10-year-old.
 
+QUIZ RULES:
+- Generate a short beginner quiz from the section.
+- Base quiz questions ONLY on the provided markdown section.
+- Do not invent new Arabic examples unless clearly marked as generated.
+- Prefer Arabic examples from the source.
+- Keep questions easy and interactive.
+- Include mixed question types:
+  - multiple_choice
+  - fill_blank
+  - true_false
+  - short_answer
+- Each quiz question must include:
+  - question
+  - options, if needed
+  - correct_answer
+  - simple_explanation
+- If the section is too short for a quiz, return an empty list.
+
 EXERCISE ANSWER RULES:
 - For each exercise answer:
   - give the correct answer
@@ -174,6 +192,7 @@ OUTPUT FORMAT:
       ""
     ]
   }},
+  
   "key_terms": [
     {{
       "arabic": "",
@@ -187,6 +206,36 @@ OUTPUT FORMAT:
       "front": "",
       "back": "",
       "arabic_focus": ""
+    }}
+  ],
+    "quiz": [
+    {{
+      "type": "multiple_choice",
+      "question": "",
+      "options": ["", "", "", ""],
+      "correct_answer": "",
+      "simple_explanation": ""
+    }},
+    {{
+      "type": "fill_blank",
+      "question": "",
+      "options": [],
+      "correct_answer": "",
+      "simple_explanation": ""
+    }},
+    {{
+      "type": "true_false",
+      "question": "",
+      "options": ["True", "False"],
+      "correct_answer": "",
+      "simple_explanation": ""
+    }},
+    {{
+      "type": "short_answer",
+      "question": "",
+      "options": [],
+      "correct_answer": "",
+      "simple_explanation": ""
     }}
   ],
   "exercise_answers": [
@@ -225,13 +274,15 @@ OUTPUT FORMAT:
 }}
 
 IMPORTANT:
+- Keep quiz questions separate from exercise answers.
+- Quiz questions are generated for practice.
+- Exercise answers are only for exercises already present in the source text.
 - If there is no common mistake supported by the section, use:
   "common_mistake": null
 - If there is no suitable diagram, use:
   "diagram": null
 - Do not include markdown outside the JSON.
 - Do not include explanations outside the JSON.
-
 SECTION MARKDOWN:
 
 {section_markdown}
