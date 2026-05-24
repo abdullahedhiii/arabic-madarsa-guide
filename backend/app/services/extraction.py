@@ -63,16 +63,28 @@ STRICT EXTRACTION MODE:
 - You are NOT a teacher in this step.
 - You are NOT allowed to correct grammar.
 - You are NOT allowed to infer missing labels.
+- You are NOT allowed to guess unclear Arabic.
 - You are NOT allowed to replace unclear Arabic with a likely term.
 - You are NOT allowed to rewrite bilingual text into a single language.
-- You are NOT allowed to paraphrase, summarize, translate, or clean formatting.
+- You are NOT allowed to paraphrase, summarize, translate, simplify, or clean formatting.
 - You must copy visible text only.
 - The output must remain visually faithful to the page image.
 - If a word is unclear, write "[UNCLEAR]".
-- If a line is unreadable, write "[UNREADABLE LINE]".
+- If a full line is unreadable, write "[UNREADABLE LINE]".
 - Do not generate repeated labels unless they are visibly repeated on the page.
 - Do not change signs/headings into another Arabic or English term.
 - Do not explain the content.
+
+ANTI-HALLUCINATION RULES:
+- If you are not visually certain, do NOT guess.
+- It is better to output [UNCLEAR] than to output a likely Arabic word.
+- Never complete a partially visible Arabic word.
+- Never fill missing parts from grammar knowledge.
+- Never use textbook knowledge to repair text.
+- Never convert a blurry word into a common grammar term.
+- Never add examples that are not visible.
+- Never add words because they “make sense”.
+- Copy only what your eyes can see.
 """
 
 def build_extraction_prompt(page_num):
@@ -86,6 +98,15 @@ Copy the visible text from the image as faithfully as possible.
 
 {STRICT_EXTRACTION_RULES}
 
+COPYING METHOD:
+- Work line by line from top to bottom.
+- Within each line, preserve the visible order as much as possible.
+- Do not merge separate lines.
+- Do not split one visible line into a different explanation.
+- For tables, copy row by row.
+- For diagrams, copy visible boxes and arrows only.
+- Use indentation only to show visible hierarchy.
+
 MIXED LANGUAGE PRESERVATION RULES:
 - Many lines contain BOTH Arabic and English.
 - Preserve the exact language mixture visible on the page.
@@ -95,7 +116,7 @@ MIXED LANGUAGE PRESERVATION RULES:
 - If a line contains Arabic + English together, preserve BOTH exactly as visible.
 - Keep English words inline where they appear.
 - Keep Arabic words inline where they appear.
-- Do NOT "complete" partially Arabic lines.
+- Do NOT complete partially Arabic lines.
 - Do NOT rewrite bilingual educational formatting.
 
 CRITICAL ARABIC RULES:
@@ -112,6 +133,8 @@ CRITICAL ARABIC RULES:
 - NEVER normalize Arabic spelling.
 - NEVER substitute a likely Arabic grammar term.
 - Arabic words MUST remain inline inside the line where they appear.
+- If harakat are unclear, preserve the base letters and mark the unclear part with [UNCLEAR].
+- If a full Arabic word is unclear, use [UNCLEAR] instead of guessing.
 
 ENGLISH PRESERVATION RULES:
 - Preserve English text EXACTLY as visible.
@@ -126,13 +149,25 @@ DOCUMENT RULES:
 - Do not translate.
 - Do not summarize.
 - Do not invent missing text.
+- Do not add section titles that are not visible.
+- Do not add explanations.
 
 DIAGRAM/TABLE RULES:
 - If the page contains a diagram, flowchart, relationship tree, or table:
+  - Copy only visually observable text.
   - Copy only visually observable structure.
   - Preserve hierarchy using indentation.
   - If some branches are unclear, write [UNCLEAR].
   - Do not invent missing relationships or structure.
+  - Do not describe images unless text labels are visible.
+
+SELF-CHECK BEFORE FINAL OUTPUT:
+Before returning, silently check:
+1. Did I translate anything? If yes, undo it.
+2. Did I add any Arabic word not clearly visible? If yes, replace with [UNCLEAR].
+3. Did I normalize or correct Arabic? If yes, restore visible form.
+4. Did I remove English from a mixed line? If yes, restore it.
+5. Did I add grammar knowledge? If yes, remove it.
 
 EXAMPLES:
 
@@ -154,6 +189,15 @@ Types of Sentences
 WRONG:
 أنواع الجمل
 
+Visible blurry Arabic word:
+[unclear visual word]
+
+Correct output:
+[UNCLEAR]
+
+WRONG:
+اِسْمٌ
+
 OUTPUT:
 - Return ONLY markdown text.
 - Do NOT return JSON.
@@ -161,7 +205,6 @@ OUTPUT:
 - Do NOT remove tashkeel/harakat from visible Arabic terms.
 - Preserve headings and numbering exactly as visible.
 """
-
 
 def image_bytes_to_data_url(image_bytes: bytes) -> str:
     encoded = base64.b64encode(image_bytes).decode("utf-8")
