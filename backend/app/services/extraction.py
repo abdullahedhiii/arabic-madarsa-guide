@@ -59,15 +59,19 @@ def validate_pages(pages: List[int]):
 
 STRICT_EXTRACTION_RULES = """
 STRICT EXTRACTION MODE:
+- You are performing OCR-style visual copying only.
 - You are NOT a teacher in this step.
 - You are NOT allowed to correct grammar.
 - You are NOT allowed to infer missing labels.
 - You are NOT allowed to replace unclear Arabic with a likely term.
+- You are NOT allowed to rewrite bilingual text into a single language.
+- You are NOT allowed to paraphrase, summarize, translate, or clean formatting.
 - You must copy visible text only.
-- If a word is unclear, write "[UNCLEAR]" and add it to unclear_arabic.
+- The output must remain visually faithful to the page image.
+- If a word is unclear, write "[UNCLEAR]".
 - If a line is unreadable, write "[UNREADABLE LINE]".
 - Do not generate repeated labels unless they are visibly repeated on the page.
-- Do not change signs/headings into another Arabic term.
+- Do not change signs/headings into another Arabic or English term.
 - Do not explain the content.
 """
 
@@ -81,6 +85,18 @@ TASK:
 Copy the visible text from the image as faithfully as possible.
 
 {STRICT_EXTRACTION_RULES}
+
+MIXED LANGUAGE PRESERVATION RULES:
+- Many lines contain BOTH Arabic and English.
+- Preserve the exact language mixture visible on the page.
+- NEVER convert English into Arabic.
+- NEVER convert Arabic into English.
+- NEVER rewrite mixed-language lines into a single language.
+- If a line contains Arabic + English together, preserve BOTH exactly as visible.
+- Keep English words inline where they appear.
+- Keep Arabic words inline where they appear.
+- Do NOT "complete" partially Arabic lines.
+- Do NOT rewrite bilingual educational formatting.
 
 CRITICAL ARABIC RULES:
 - Preserve ALL Arabic words exactly as visible.
@@ -97,8 +113,14 @@ CRITICAL ARABIC RULES:
 - NEVER substitute a likely Arabic grammar term.
 - Arabic words MUST remain inline inside the line where they appear.
 
+ENGLISH PRESERVATION RULES:
+- Preserve English text EXACTLY as visible.
+- Do not remove English words from mixed lines.
+- Do not replace English explanations with Arabic.
+- If a heading contains Arabic + English, preserve both.
+- If a bullet contains Arabic + English, preserve both.
+
 DOCUMENT RULES:
-- Preserve English text exactly.
 - Preserve headings, examples, exercises, footnotes, and numbering.
 - Preserve line breaks as much as possible.
 - Do not translate.
@@ -107,17 +129,37 @@ DOCUMENT RULES:
 
 DIAGRAM/TABLE RULES:
 - If the page contains a diagram, flowchart, relationship tree, or table:
-  - Extract whatever structure is understandable into plain text.
+  - Copy only visually observable structure.
   - Preserve hierarchy using indentation.
   - If some branches are unclear, write [UNCLEAR].
-  - Do not invent missing relationships.
+  - Do not invent missing relationships or structure.
+
+EXAMPLES:
+
+Visible line:
+المركباتُ وَالجُمَلُ – Sentences and Phrases
+
+Correct output:
+المركباتُ وَالجُمَلُ – Sentences and Phrases
+
+WRONG:
+المركباتُ وَالجُمَلُ – الجمل والعبارات
+
+Visible line:
+Types of Sentences
+
+Correct output:
+Types of Sentences
+
+WRONG:
+أنواع الجمل
 
 OUTPUT:
 - Return ONLY markdown text.
 - Do NOT return JSON.
-- Do NOT remove tashkeel/harakat from any of the visible arabic terms
 - Do NOT wrap in ```markdown.
-- Preserve headings and numbering.
+- Do NOT remove tashkeel/harakat from visible Arabic terms.
+- Preserve headings and numbering exactly as visible.
 """
 
 
