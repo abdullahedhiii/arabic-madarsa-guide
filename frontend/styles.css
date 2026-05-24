@@ -95,20 +95,19 @@ select {
 .source-pages-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 18;
+  z-index: 40;
   display: grid;
   place-items: center;
   padding: 24px;
   background: rgba(23, 32, 29, 0.56);
+  overflow: hidden;
 }
 
 .source-pages-panel {
-  width: min(980px, 100%);
-  max-height: min(90vh, 900px);
+  width: min(980px, calc(100vw - 48px));
+  max-height: calc(100dvh - 48px);
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
-  gap: 18px;
-  padding: 22px;
   border: 1px solid rgba(255, 255, 255, 0.36);
   border-radius: 8px;
   background:
@@ -123,6 +122,9 @@ select {
   align-items: start;
   justify-content: space-between;
   gap: 18px;
+  padding: 20px 22px 16px;
+  border-bottom: 1px solid rgba(15, 111, 115, 0.14);
+  background: rgba(255, 253, 248, 0.78);
 }
 
 .source-pages-header h2 {
@@ -136,9 +138,17 @@ select {
 }
 
 .source-pages-panel .page-preview-grid {
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   max-height: none;
   min-height: 0;
+  overflow: auto;
+  padding: 18px 22px 22px;
+}
+
+.source-pages-panel .page-preview-card img {
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+  background: #fff;
 }
 
 .hero {
@@ -578,13 +588,15 @@ select:focus {
 
 .history-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
 }
 
 .history-card {
   display: grid;
   gap: 10px;
+  min-width: 0;
+  align-content: start;
   padding: 18px;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -610,8 +622,13 @@ select:focus {
 }
 
 .history-card h3 {
+  display: -webkit-box;
+  overflow: hidden;
   margin: 0;
   font-size: 1rem;
+  line-height: 1.3;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .history-card p {
@@ -638,14 +655,16 @@ select:focus {
 }
 
 .history-section-list {
-  display: flex;
-  flex-wrap: wrap;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 8px;
   margin-top: 2px;
 }
 
 .history-section-chip {
-  max-width: 100%;
+  width: 100%;
+  min-width: 0;
   padding: 7px 10px;
   border: 1px solid rgba(15, 111, 115, 0.16);
   border-radius: 999px;
