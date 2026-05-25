@@ -12,6 +12,8 @@ from app.config import (
 )
 from app.services.file_storage import new_id, save_json, save_text, read_json, read_text
 
+NO_LESSON_CONTENT_MARKER = "_No lesson content found on this page._"
+
 
 client = OpenAI(
     api_key=OPENROUTER_API_KEY,
@@ -344,6 +346,16 @@ def call_qwen_for_learning_material(markdown: str) -> dict:
     return safe_json_parse(raw_output)
 
 
+def has_lesson_markdown_content(markdown: str) -> bool:
+    visible_lines = [
+        line.strip()
+        for line in markdown.splitlines()
+        if line.strip() and not line.strip().startswith("<!--")
+    ]
+
+    return any(line != NO_LESSON_CONTENT_MARKER for line in visible_lines)
+
+
 def generate_material(extraction_id: str) -> dict:
     extraction_dir = EXTRACTIONS_DIR / extraction_id
     extracted_md_path = extraction_dir / "extracted.md"
@@ -355,6 +367,12 @@ def generate_material(extraction_id: str) -> dict:
         )
 
     markdown = read_text(extracted_md_path)
+    if not has_lesson_markdown_content(markdown):
+        raise HTTPException(
+            status_code=400,
+            detail="No lesson text was found in this extraction. Choose pages with lesson content."
+        )
+
     extraction_metadata_path = extraction_dir / "metadata.json"
     extraction_metadata = read_json(extraction_metadata_path) if extraction_metadata_path.exists() else {}
 

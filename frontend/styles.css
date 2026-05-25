@@ -571,6 +571,25 @@ select:focus {
   word-break: break-word;
 }
 
+.no-page-content {
+  display: grid;
+  gap: 6px;
+  margin: 16px 0;
+  padding: 18px;
+  border-left: 4px solid var(--gold);
+  border-radius: 8px;
+  color: #594427;
+  background: #fff7e5;
+}
+
+.no-page-content strong {
+  color: var(--ink);
+}
+
+.no-page-content span {
+  color: var(--muted);
+}
+
 .generated-content {
   display: grid;
   gap: 18px;

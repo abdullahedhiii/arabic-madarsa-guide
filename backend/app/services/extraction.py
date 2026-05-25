@@ -1,4 +1,5 @@
 import base64
+import re
 from typing import List
 
 import fitz
@@ -14,6 +15,8 @@ from app.config import (
     QWEN_VISION_MODEL,
 )
 from app.services.file_storage import new_id, save_text, save_json
+
+NO_LESSON_CONTENT_MARKER = "_No lesson content found on this page._"
 
 
 client = OpenAI(
@@ -151,6 +154,9 @@ DOCUMENT RULES:
 - Do not invent missing text.
 - Do not add section titles that are not visible.
 - Do not add explanations.
+- If the page contains only decorative calligraphy, only Bismillah, only a logo, or only ornamental cover/front-matter text with no lesson, heading, exercise, example, or paragraph, return exactly:
+  {NO_LESSON_CONTENT_MARKER}
+- Do not turn decorative calligraphy into lesson content.
 
 DIAGRAM/TABLE RULES:
 - If the page contains a diagram, flowchart, relationship tree, or table:
@@ -209,6 +215,26 @@ OUTPUT:
 def image_bytes_to_data_url(image_bytes: bytes) -> str:
     encoded = base64.b64encode(image_bytes).decode("utf-8")
     return f"data:image/png;base64,{encoded}"
+
+
+def normalize_decorative_only_markdown(markdown: str) -> str:
+    text = markdown.strip()
+    compact = re.sub(r"[\s\W_]+", "", text, flags=re.UNICODE)
+    arabic_only = re.sub(r"[^\u0600-\u06ff]", "", text)
+    has_lesson_signals = bool(re.search(
+        r"\b(section|definition|exercise|example|objective|lesson|chapter|types?|question|answer)\b|[0-9]+\.[0-9]+",
+        text,
+        flags=re.IGNORECASE,
+    ))
+    basmala_variants = (
+        "بسماللهالرحمنالرحيم",
+        "بسملهالرحمنالرحيم",
+    )
+
+    if not has_lesson_signals and len(arabic_only) <= 32 and any(variant in compact for variant in basmala_variants):
+        return NO_LESSON_CONTENT_MARKER
+
+    return markdown
 
 
 def render_page_to_png_bytes(doc: fitz.Document, page_num: int, zoom: float = 2.5) -> bytes:
@@ -275,7 +301,7 @@ Do NOT explain anything.
         max_tokens=3000,
     )
 
-    return response.choices[0].message.content
+    return normalize_decorative_only_markdown(response.choices[0].message.content)
 
 
 def extract_pages(book_id: str, pages: List[int]) -> dict:

@@ -5,6 +5,7 @@ import "../styles.css";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
 const MAX_PAGES = 5;
+const NO_LESSON_CONTENT_MARKER = "_No lesson content found on this page._";
 
 function apiUrl(path) {
   return `${API_BASE_URL}${path}`;
@@ -77,6 +78,20 @@ function markdownToHtml(markdown = "") {
       continue;
     }
 
+    if (line === NO_LESSON_CONTENT_MARKER) {
+      if (inList) {
+        html.push("</ul>");
+        inList = false;
+      }
+      html.push(`
+        <div class="no-page-content">
+          <strong>No lesson content on this page</strong>
+          <span>This looks like a decorative, cover, or opening page. Choose pages with lesson text before building a lesson.</span>
+        </div>
+      `);
+      continue;
+    }
+
     if (line.startsWith("<!--")) {
       html.push(`<p class="pill">${escapeHtml(line.replace(/[<!\->]/g, "").trim())}</p>`);
       continue;
@@ -112,6 +127,15 @@ function markdownToHtml(markdown = "") {
 
   if (inList) html.push("</ul>");
   return html.join("");
+}
+
+function hasLessonMarkdownContent(markdown = "") {
+  const visibleLines = markdown
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith("<!--"));
+
+  return visibleLines.some((line) => line !== NO_LESSON_CONTENT_MARKER);
 }
 
 function parsePageRange(startValue, endValue) {
@@ -1115,7 +1139,12 @@ function App() {
       setExtraction(data);
       setGeneration(null);
       setCurrentLesson(null);
-      setStatus({ message: "Pages are ready. Build the lesson when you are happy with them.", type: "success" });
+      setStatus({
+        message: hasLessonMarkdownContent(data.markdown)
+          ? "Pages are ready. Build the lesson when you are happy with them."
+          : "No lesson text was found on these pages. Choose a page with lesson content.",
+        type: hasLessonMarkdownContent(data.markdown) ? "success" : "error",
+      });
       setActiveTab("extract");
     } catch (error) {
       setStatus({ message: error.message, type: "error" });
@@ -1127,6 +1156,11 @@ function App() {
   async function generateContent() {
     if (!extraction?.extraction_id) {
       setStatus({ message: "Run an extraction before generating content.", type: "error" });
+      return;
+    }
+
+    if (!hasLessonMarkdownContent(extraction.markdown)) {
+      setStatus({ message: "This extraction has no lesson text. Choose pages with actual lesson content first.", type: "error" });
       return;
     }
 
@@ -1294,7 +1328,12 @@ function App() {
                         Book: {extraction.book_id} | Pages: {extraction.pages.join(", ")}
                       </p>
                     </div>
-                    <button className="secondary-button" type="button" onClick={generateContent} disabled={isGenerating}>
+                    <button
+                      className="secondary-button"
+                      type="button"
+                      onClick={generateContent}
+                      disabled={isGenerating || !hasLessonMarkdownContent(extraction.markdown)}
+                    >
                       {isGenerating ? "Building lesson..." : "Build lesson"}
                     </button>
                   </div>
